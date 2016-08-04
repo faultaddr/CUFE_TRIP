@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.panda.myapplication.enroll">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/enroll_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="报名表"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+
+        <EditText
+
+            android:id="@+id/name"
+            android:layout_marginTop="20dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enroll_text"
+            android:hint="姓名" />
+
+        <EditText
+            android:id="@+id/student_id"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:hint="学号" />
+
+        <RelativeLayout
+            android:id="@+id/enroll_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/student_id"
+
+            android:layout_marginTop="20dp"
+            >
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/sex_select"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="性别"
+                android:gravity="center"
+                android:textSize="20sp"
+                />
+
+            <Spinner
+                android:layout_marginTop="20dp"
+                android:id="@+id/enroll_spinner1"
+                android:layout_toRightOf="@id/sex_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"></Spinner>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/enroll_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/enroll_layout">
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/line_select"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="路线选择"
+                android:textSize="20sp"
+
+                />
+            <Spinner
+                android:layout_marginTop="20dp"
+                android:id="@+id/enroll_spinner2"
+                android:layout_toRightOf="@id/line_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"></Spinner>
+        </RelativeLayout>
+        <EditText
+            android:id="@+id/personal_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/enroll_line"
+            android:hint="身份证号（用于购买保险）"
+            android:textColorHint="#0000ff"
+            />
+        <Button
+            android:id="@+id/enroll_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/personal_id"
+            android:layout_marginTop="20dp"
+            android:text="立即报名"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
