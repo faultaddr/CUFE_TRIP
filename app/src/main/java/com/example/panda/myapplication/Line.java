@@ -2,6 +2,8 @@ package com.example.panda.myapplication;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,38 +74,66 @@ public class Line extends Activity implements OnPageChangeListener {
      */
     private GoogleApiClient client;
 
+    public Handler mHandler=new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            ImageView imageView = new ImageView(Line.this);
+            switch(msg.what)
+            {
+                case 0:
+
+                    mImageViews[0] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[0]);
+                    break;
+                case 1:
+                    mImageViews[1] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[1]);
+                    break;
+                case 2:
+                    mImageViews[2] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[2]);
+                    break;
+                case 3:
+                    mImageViews[3] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[3]);
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line);
-        ViewGroup group = (ViewGroup) findViewById(R.id.viewGroup);
+
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         //载入图片资源ID
         imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.new_three, R.drawable.newfour};
 
 
-        //将点点加入到ViewGroup中
-        tips = new ImageView[imgIdArray.length];
-        for (int i = 0; i < tips.length; i++) {
-            ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(new LayoutParams(10, 10));
-            tips[i] = imageView;
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT));
-            layoutParams.leftMargin = 5;
-            layoutParams.rightMargin = 5;
-            group.addView(imageView, layoutParams);
-        }
+
 
 
         //将图片装载到数组中
         mImageViews = new ImageView[imgIdArray.length];
-        for (int i = 0; i < mImageViews.length; i++) {
-            ImageView imageView = new ImageView(this);
-            mImageViews[i] = imageView;
-            imageView.setBackgroundResource(imgIdArray[i]);
-        }
+        new Thread() {
+            public void run(){
+                for(
+                        int i = 0;
+                        i<mImageViews.length;i++) {
+                    Message msg = new Message();
+                    msg.what = i;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }.start();
         //设置Adapter
         viewPager.setAdapter(new ViewPagerAdapter(mImageViews));
 

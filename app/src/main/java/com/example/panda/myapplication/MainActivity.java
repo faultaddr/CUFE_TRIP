@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -30,13 +32,48 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
     private ImageView Imageview_enroll;
     private ViewPager viewPager;
     private TextView textview;
-    private ArrayList<List_info> infomations;
+    private static ArrayList<List_info> informations=new ArrayList<>();
     private ListView listView;
     public static ImageView[] mImageViews;
     private int[] imgIdArray;
     private static String[] textIdArray;
     private String[] text=new String[5];
     public static int count=0;
+    public static Bitmap[] bmp = new Bitmap[5];
+
+    public Handler mHandler=new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            ImageView imageView = new ImageView(MainActivity.this);
+            switch(msg.what)
+            {
+                case 0:
+
+                    mImageViews[0] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[0]);
+                    break;
+                case 1:
+                    mImageViews[1] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[1]);
+                    break;
+                case 2:
+                    mImageViews[2] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[2]);
+                    break;
+                case 3:
+                    mImageViews[3] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[3]);
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +83,7 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
 
 
         Resources res = getResources();
-        Bitmap[] bmp = new Bitmap[5];
+
         bmp[0] = BitmapFactory.decodeResource(res, R.drawable.newone_small);
         bmp[1] = BitmapFactory.decodeResource(res, R.drawable.newtwo_small);
         bmp[2] = BitmapFactory.decodeResource(res, R.drawable.newthree_small);
@@ -75,27 +112,38 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
         text[1]="线路2详情                        >>>>";
         text[2]="线路3详情                        >>>>";
         text[3]="线路4详情                        >>>>";
-        infomations = new ArrayList();
-        for (int i = 0; i < textIdArray.length; i++) {
-            List_info list_info = new List_info(bmp[i], text[i]);
-            this.infomations.add(list_info);
-        }
+
+        new Thread() {
+            public void run() {
+                for (
+                        int i = 0;
+                        i < textIdArray.length; i++)
+
+                {
+                    List_info list_info = new List_info(bmp[i], text[i]);
+                    informations.add(list_info);
+                }
+            }
+        }.start();
         listView =(ListView)findViewById(R.id.listview) ;
 
-        list_Adapter myListAdapter = new list_Adapter(MainActivity.this, infomations);
+        list_Adapter myListAdapter = new list_Adapter(MainActivity.this, informations);
         listView.setOnItemClickListener(this);
         listView.setAdapter(myListAdapter);
         //将图片\文字装载到数组中
         mImageViews = new ImageView[imgIdArray.length];
 
-        for (int i = 0; i < mImageViews.length; i++) {
-            ImageView imageView = new ImageView(this);
-
-            mImageViews[i] = imageView;
-
-            //Textview.setText(textIdArray[i]);
-            imageView.setBackgroundResource(imgIdArray[i]);
-        }
+        new Thread() {
+            public void run(){
+                for(
+                        int i = 0;
+                        i<mImageViews.length;i++) {
+                    Message msg = new Message();
+                    msg.what = i;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }.start();
         viewPager.setOnPageChangeListener(this);
         viewPager.setAdapter(new ViewPagerAdapter(mImageViews));
         //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动

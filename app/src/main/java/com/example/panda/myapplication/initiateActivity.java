@@ -1,41 +1,63 @@
 package com.example.panda.myapplication;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
+
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
+
+import android.os.Message;
+
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Handler;
 import android.widget.ImageView;
 
 
-import java.util.ArrayList;
-import java.util.List;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import java.util.logging.LogRecord;
+
+
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import android.view.ViewGroup;
+
+
+
 
 public class initiateActivity extends Activity implements OnPageChangeListener {
+
+    public Handler mHandler=new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            ImageView imageView = new ImageView(initiateActivity.this);
+            switch(msg.what)
+            {
+                case 0:
+
+                    mImageViews[0] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[0]);
+                    break;
+                case 1:
+                    mImageViews[1] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[1]);
+                    break;
+                case 2:
+                    mImageViews[2] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[2]);
+                    break;
+                case 3:
+                    mImageViews[3] = imageView;
+                    imageView.setBackgroundResource(imgIdArray[3]);
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
     private final String line_introduction1 =
             "路线简介：紫禁城一日游\n" +
                     "路线开销：200元/人\n" +
@@ -88,27 +110,22 @@ public class initiateActivity extends Activity implements OnPageChangeListener {
         imgIdArray = new int[]{R.drawable.first, R.drawable.second, R.drawable.third, R.drawable.forth};
 
 
-        //将点点加入到ViewGroup中
-        tips = new ImageView[imgIdArray.length];
-        for (int i = 0; i < tips.length; i++) {
-            ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(new LayoutParams(10, 10));
-            tips[i] = imageView;
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT));
-            layoutParams.leftMargin = 5;
-            layoutParams.rightMargin = 5;
-            group.addView(imageView, layoutParams);
-        }
+
 
 
         //将图片装载到数组中
         mImageViews = new ImageView[imgIdArray.length];
-        for (int i = 0; i < mImageViews.length; i++) {
-            ImageView imageView = new ImageView(this);
-            mImageViews[i] = imageView;
-            imageView.setBackgroundResource(imgIdArray[i]);
+        new Thread() {
+            public void run(){
+            for(
+            int i = 0;
+            i<mImageViews.length;i++) {
+                Message msg = new Message();
+                msg.what = i;
+                mHandler.sendMessage(msg);
+            }
         }
+        }.start();
         //设置Adapter
         viewPager.setAdapter(new initViewPagerAdapter(mImageViews));
 
@@ -128,7 +145,7 @@ public class initiateActivity extends Activity implements OnPageChangeListener {
             Intent intent = new Intent();
             intent.setClass(this, LoginActivity.class);
             startActivity(intent);
-
+            finish();
         }
     }
 

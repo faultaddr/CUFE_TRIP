@@ -322,37 +322,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            bool=true;
+            new Thread() {
+                public void run() {
+                    BmobQuery<User> bmobQuery = new BmobQuery<User>();
+                    bmobQuery.getObject(mEmail, new QueryListener<User>() {
 
-            BmobQuery<User> bmobQuery = new BmobQuery<User>();
-            bmobQuery.getObject(mEmail, new QueryListener<User>() {
+                        @Override
 
-                @Override
-
-                public void done(User object,BmobException e) {
-                    if (e == null) {
-                        bool = true;
-                    }
-                    else{
-                            bool = false;
+                        public void done(User object, BmobException e) {
+                            if (e == null) {
+                                bool = true;
+                            } else {
+                                bool = false;
+                            }
                         }
+                    });
+                }}.start();
+                    if (!bool) {
+                        User p2 = new User();
+                        p2.setName(mEmail);
+                        p2.setKey(mPassword);
+                        p2.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String objectId, BmobException e) {
+                                if (e == null) {
+                                    bool = true;
+                                } else {
+                                    mEmailView.setError("name has already exist");
+                                    bool = false;
+                                }
+                            }
+                        });
                     }
-            });
-            if(!bool){
-                User p2 = new User();
-                p2.setName(mEmail);
-                p2.setKey(mPassword);
-                p2.save(new SaveListener<String>() {
-                    @Override
-                    public void done(String objectId,BmobException e) {
-                        if(e==null){
-                            bool=true;
-                        }else{
-                            mEmailView.setError("name has already exist");
-                            bool=false;
-                        }
-                    }
-                });
-            }
+
+
             return bool;
         }
         //if successfully post then finish ,else setError "this password is incorrect"
@@ -362,9 +366,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent intent=new Intent();
-                intent.setClass(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
+                new Thread() {
+                    public void run(){
+                    Intent intent = new Intent();
+                    intent.setClass(LoginActivity.this,MainActivity.class);
+
+                    startActivity(intent);
+                }}.start();
                 finish();
 
             } else {

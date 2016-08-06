@@ -34,6 +34,8 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+    //用来标示返回按钮是在fragment里按的还是在主activity按的
+    public static int k=1;
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -119,14 +121,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        k=1;
         setupActionBar();
 
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) {
-            startActivity(new Intent(this, MainActivity.class));
+        if (id == android.R.id.home&&k==1) {
+            new Thread() {
+                public void run(){
+                    startActivity(new Intent(SettingsActivity.this,MainActivity.class));
+                }
+            }.start();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -181,6 +189,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+            k=0;
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -195,7 +204,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                new Thread() {
+                    public void run(){
+                        k=1;
+                        startActivity(new Intent(getActivity(),SettingsActivity.class));
+                    }
+                }.start();
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -212,6 +226,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_notification);
+            k=0;
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -225,7 +240,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                new Thread() {
+                    public void run(){
+                        k=1;
+                        startActivity(new Intent(getActivity(),SettingsActivity.class));
+                    }
+                }.start();
+
+
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -242,6 +264,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_data_sync);
+            k=0;
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -255,7 +278,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                new Thread() {
+                    public void run(){
+                        k=1;
+                    startActivity(new Intent(getActivity(),SettingsActivity.class));
+                }
+                }.start();
                 return true;
             }
             return super.onOptionsItemSelected(item);

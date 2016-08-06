@@ -5,16 +5,16 @@
     <header
         android:fragment="com.example.panda.myapplication.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
+        android:title="常用设置" />
 
     <header
         android:fragment="com.example.panda.myapplication.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
+        android:title="通知" />
 
     <header
         android:fragment="com.example.panda.myapplication.SettingsActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
-        android:title="@string/pref_header_data_sync" />
+        android:title="数据与同步" />
 
 </preference-headers>

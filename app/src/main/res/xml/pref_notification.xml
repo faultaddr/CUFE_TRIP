@@ -5,7 +5,7 @@
     <SwitchPreference
         android:defaultValue="true"
         android:key="notifications_new_message"
-        android:title="@string/pref_title_new_message_notifications" />
+        android:title="新的消息通知" />
 
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
@@ -15,13 +15,13 @@
         android:dependency="notifications_new_message"
         android:key="notifications_new_message_ringtone"
         android:ringtoneType="notification"
-        android:title="@string/pref_title_ringtone" />
+        android:title="响铃" />
 
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <SwitchPreference
         android:defaultValue="true"
         android:dependency="notifications_new_message"
         android:key="notifications_new_message_vibrate"
-        android:title="@string/pref_title_vibrate" />
+        android:title="震动" />
 
 </PreferenceScreen>
