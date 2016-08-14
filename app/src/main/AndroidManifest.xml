@@ -17,29 +17,39 @@
     <!-- 获取sd卡写的权限，用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STTE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="CUFE_TRIP"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".initiateActivity">
+
+
+        <activity
+            android:name=".initiateActivity"
+            android:label="CUFE_TRIP"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Line" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="设置" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="登录"
+            android:screenOrientation="portrait" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -51,7 +61,12 @@
         <activity
             android:name=".MainActivity"
             android:label="CUFE_TRIP" />
-        <activity android:name=".enroll" />
+        <activity
+            android:name=".enroll"
+            android:label="报名" />
+        <activity
+            android:name=".Line"
+            android:label="报名" />
     </application>
 
 </manifest>

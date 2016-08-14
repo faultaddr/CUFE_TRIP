@@ -13,8 +13,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -26,45 +28,36 @@ import java.util.ArrayList;
 
 import cn.bmob.v3.Bmob;
 
+import static java.lang.Integer.MAX_VALUE;
+
 public class MainActivity extends Activity implements ViewPager.OnPageChangeListener,AdapterView.OnItemClickListener{
     private ImageView Imageview;
     private ImageView Imageview_setting;
     private ImageView Imageview_enroll;
     private ViewPager viewPager;
+    private PagerAdapter pageradapter;
     private TextView textview;
     private static ArrayList<List_info> informations=new ArrayList<>();
     private ListView listView;
-    public static ImageView[] mImageViews;
+    public static ArrayList<ImageView> mImageViews=new ArrayList<>();
     private int[] imgIdArray;
     private static String[] textIdArray;
     private String[] text=new String[5];
     public static int count=0;
     public static Bitmap[] bmp = new Bitmap[5];
-
     public Handler mHandler=new Handler()
     {
         @Override
         public void handleMessage(Message msg)
         {
-            ImageView imageView = new ImageView(MainActivity.this);
+
             switch(msg.what)
             {
                 case 0:
-
-                    mImageViews[0] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[0]);
-                    break;
-                case 1:
-                    mImageViews[1] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[1]);
-                    break;
-                case 2:
-                    mImageViews[2] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[2]);
-                    break;
-                case 3:
-                    mImageViews[3] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[3]);
+                    viewPager.setAdapter(pageradapter);
+                    //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
+                    viewPager.setCurrentItem((mImageViews.size()) * 100);
+                    viewPager.setOnPageChangeListener(MainActivity.this);
                     break;
                 default:
                     break;
@@ -73,22 +66,22 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
         }
 
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bmob.initialize(this, "Your Application ID");
         this.setTitle("CUFE_TRIP");
         setContentView(R.layout.activity_main);
 
 
-        Resources res = getResources();
 
-        bmp[0] = BitmapFactory.decodeResource(res, R.drawable.newone_small);
-        bmp[1] = BitmapFactory.decodeResource(res, R.drawable.newtwo_small);
-        bmp[2] = BitmapFactory.decodeResource(res, R.drawable.newthree_small);
-        bmp[3] = BitmapFactory.decodeResource(res, R.drawable.newfour_small);
-
+        new Thread() {
+            public void run(){
+                Resources res = getResources();
+                bmp[0]=BitmapFactory.decodeResource(res,R.drawable.newone_small);
+                bmp[1]=BitmapFactory.decodeResource(res,R.drawable.newtwo_small);
+                bmp[2]=BitmapFactory.decodeResource(res,R.drawable.newthree_small);
+                bmp[3]=BitmapFactory.decodeResource(res,R.drawable.newfour_small);
+        }}.start();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setPageTransformer(true, new DepthPageTransformer());
         //载入图片资源ID
@@ -131,23 +124,64 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
         listView.setOnItemClickListener(this);
         listView.setAdapter(myListAdapter);
         //将图片\文字装载到数组中
-        mImageViews = new ImageView[imgIdArray.length];
-
         new Thread() {
             public void run(){
-                for(
-                        int i = 0;
-                        i<mImageViews.length;i++) {
-                    Message msg = new Message();
-                    msg.what = i;
-                    mHandler.sendMessage(msg);
-                }
+                ImageView imageView1 = new ImageView(MainActivity.this);
+                ImageView imageView2 = new ImageView(MainActivity.this);
+                ImageView imageView3 = new ImageView(MainActivity.this);
+                ImageView imageView4 = new ImageView(MainActivity.this);
+                ArrayList<ImageView>mmImageViews=new ArrayList<>();
+                imageView1.setBackgroundResource(imgIdArray[0]);
+                mmImageViews.add( imageView1);
+                imageView2.setBackgroundResource(imgIdArray[1]);
+                mmImageViews.add( imageView2);
+                imageView3.setBackgroundResource(imgIdArray[2]);
+                mmImageViews.add( imageView3);
+                imageView4.setBackgroundResource(imgIdArray[3]);
+                mmImageViews.add( imageView4);
+                mImageViews.addAll(mmImageViews);
+                Message msg = new Message();
+                msg.what = 0;
+                mHandler.sendMessage(msg);
+
             }
         }.start();
-        viewPager.setOnPageChangeListener(this);
-        viewPager.setAdapter(new ViewPagerAdapter(mImageViews));
-        //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
-        viewPager.setCurrentItem((mImageViews.length) * 100);
+
+
+        pageradapter=new PagerAdapter() {
+
+
+            @Override
+            public int getCount() {
+                return MAX_VALUE;
+            }
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                return arg0 == arg1;
+            }
+
+            @Override
+            public void destroyItem(View container, int position, Object object) {
+                ((ViewPager) container).removeView(mImageViews.get(position % mImageViews.size()));
+
+            }
+
+            /**
+             * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
+             */
+            @Override
+            public Object instantiateItem(View container, int position) {
+
+
+                assert ((ViewPager) container) != null;
+                ((ViewPager) container).addView(mImageViews.get(position % mImageViews.size()), 0);
+                return mImageViews.get(position % mImageViews.size());
+            }
+
+        };
+
+
 
 
         //设置点击导航栏路线显示的内容。
@@ -196,8 +230,10 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
     public void onPageSelected(int position) {
         //System.out.println(position);
         int pos = position % 4;
+        count=pos;
+
         textview = (TextView) findViewById(R.id.text);
-        textview.setText(textIdArray[pos]);
+        textview.setText(textIdArray[count]);
     }
 
     @Override

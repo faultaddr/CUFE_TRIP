@@ -1,42 +1,45 @@
 package com.example.panda.myapplication;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.content.Context;
+import android.content.Intent;
+
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
-import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+
+import android.os.Bundle;
+
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
+
+
+
+
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
+
+
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.ArrayList;
+
+import static java.lang.Integer.MAX_VALUE;
+
 public class Line extends Activity implements OnPageChangeListener {
+    private static int k=0;
+
     private final String line_introduction1=
             "路线简介：紫禁城一日游\n" +
-            "路线开销：200元/人\n" +
-            "人气指数: *** \n";
+                    "路线开销：200元/人\n" +
+                    "人气指数: *** \n";
     private final String line_introduction2=
             "路线简介：欢乐谷一日游\n" +
                     "路线开销：230元/人\n" +
@@ -49,55 +52,30 @@ public class Line extends Activity implements OnPageChangeListener {
             "路线简介：十渡一日游\n" +
                     "路线开销：150元/人\n" +
                     "人气指数: *** \n";
-    /**
-     * ViewPager
-     */
+
     private ViewPager viewPager;
 
-    /**
-     * 装点点的ImageView数组
-     */
+    private PagerAdapter pageradapter;
     public ImageView[] tips;
 
-    /**
-     * 装ImageView数组
-     */
-    public static ImageView[] mImageViews;
+    public static ArrayList<ImageView> mImageViews=new ArrayList<>();
 
-    /**
-     * 图片资源id
-     */
+    private TextView textView;
     private int[] imgIdArray;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
+    private int[] textArray;
     public Handler mHandler=new Handler()
     {
         @Override
         public void handleMessage(Message msg)
         {
-            ImageView imageView = new ImageView(Line.this);
+
             switch(msg.what)
             {
                 case 0:
-
-                    mImageViews[0] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[0]);
-                    break;
-                case 1:
-                    mImageViews[1] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[1]);
-                    break;
-                case 2:
-                    mImageViews[2] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[2]);
-                    break;
-                case 3:
-                    mImageViews[3] = imageView;
-                    imageView.setBackgroundResource(imgIdArray[3]);
+                    viewPager.setAdapter(pageradapter);
+                    //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
+                    viewPager.setCurrentItem((mImageViews.size()) * 100);
+                    viewPager.setOnPageChangeListener(Line.this);
                     break;
                 default:
                     break;
@@ -106,46 +84,81 @@ public class Line extends Activity implements OnPageChangeListener {
         }
 
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line);
 
+
+        textView=(TextView) findViewById(R.id.mtext);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         //载入图片资源ID
         imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.new_three, R.drawable.newfour};
+        textArray=new int[]{
+                R.string.point1,R.string.point2,R.string.point1,R.string.point2};
 
 
 
-
-
-        //将图片装载到数组中
-        mImageViews = new ImageView[imgIdArray.length];
         new Thread() {
             public void run(){
-                for(
-                        int i = 0;
-                        i<mImageViews.length;i++) {
-                    Message msg = new Message();
-                    msg.what = i;
-                    mHandler.sendMessage(msg);
-                }
+                ImageView imageView1 = new ImageView(Line.this);
+                ImageView imageView2 = new ImageView(Line.this);
+                ImageView imageView3 = new ImageView(Line.this);
+                ImageView imageView4 = new ImageView(Line.this);
+                ArrayList<ImageView>mmImageViews=new ArrayList<>();
+                imageView1.setBackgroundResource(imgIdArray[0]);
+                mmImageViews.add( imageView1);
+                imageView2.setBackgroundResource(imgIdArray[1]);
+                mmImageViews.add( imageView2);
+                imageView3.setBackgroundResource(imgIdArray[2]);
+                mmImageViews.add( imageView3);
+                imageView4.setBackgroundResource(imgIdArray[3]);
+                mmImageViews.add( imageView4);
+                mImageViews.addAll(mmImageViews);
+                Message msg = new Message();
+                msg.what = 0;
+                mHandler.sendMessage(msg);
+
             }
         }.start();
-        //设置Adapter
-        viewPager.setAdapter(new ViewPagerAdapter(mImageViews));
 
 
-        //设置监听，主要是设置点点的背景
-        viewPager.setOnPageChangeListener(this);
-        //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
-        viewPager.setCurrentItem((mImageViews.length) * 100);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        pageradapter=new PagerAdapter() {
+
+
+            @Override
+            public int getCount() {
+                return MAX_VALUE;
+            }
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                return arg0 == arg1;
+            }
+
+            @Override
+            public void destroyItem(View container, int position, Object object) {
+                ((ViewPager) container).removeView(mImageViews.get(position % mImageViews.size()));
+
+            }
+
+            /**
+             * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
+             */
+            @Override
+            public Object instantiateItem(View container, int position) {
+
+
+                assert ((ViewPager) container) != null;
+                ((ViewPager) container).addView(mImageViews.get(position % mImageViews.size()), 0);
+                return mImageViews.get(position % mImageViews.size());
+            }
+
+        };
+
     }
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -156,22 +169,28 @@ public class Line extends Activity implements OnPageChangeListener {
     public void onPageSelected(int position) {
         //System.out.println(position);
         int pos=position%4;
+        k=pos;
         switch(pos){
             case 0:
                 Toast toast1=Toast.makeText(this,line_introduction1,Toast.LENGTH_SHORT);
                 toast1.show();
+                textView.setText(textArray[pos]);
                 break;
             case 1:
                 Toast toast2=Toast.makeText(this,line_introduction2,Toast.LENGTH_SHORT);
                 toast2.show();
+                textView.setText(textArray[pos]);
                 break;
             case 2:
                 Toast toast3=Toast.makeText(this,line_introduction3,Toast.LENGTH_SHORT);
                 toast3.show();
+                textView.setText(textArray[pos]);
                 break;
             case 3:
                 Toast toast4=Toast.makeText(this,line_introduction4,Toast.LENGTH_SHORT);
                 toast4.show();
+                textView.setText(textArray[pos]);
+
                 break;
         }
     }
@@ -182,13 +201,30 @@ public class Line extends Activity implements OnPageChangeListener {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    protected void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
+//        mMapView.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
+
+    }
+    // 初始化View
 
     @Override
-    public void onStop() {
-        super.onStop();
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，实现地图生命周期管理
     }
+
+
 }

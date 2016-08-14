@@ -129,12 +129,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home&&k==1) {
+            finish();
             new Thread() {
                 public void run(){
+                    k=1;
                     startActivity(new Intent(SettingsActivity.this,MainActivity.class));
                 }
             }.start();
-            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

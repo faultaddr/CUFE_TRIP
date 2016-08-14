@@ -15,3 +15,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class com.badiu.** { *; }
+-keep class vi.com.** {*;}
+-dontwarn com.baidu.**
+
+-keepattributes Exceptions, Signature, InnerClasses
