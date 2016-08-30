@@ -21,8 +21,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STTE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
-
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
 
     <application
@@ -31,8 +29,6 @@
         android:label="CUFE_TRIP"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <activity
             android:name=".initiateActivity"
             android:label="CUFE_TRIP"
@@ -66,7 +62,8 @@
             android:label="报名" />
         <activity
             android:name=".Line"
-            android:label="报名" />
+            android:label="路线" />
+        <activity android:name=".start"></activity>
     </application>
 
 </manifest>

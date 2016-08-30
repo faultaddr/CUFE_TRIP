@@ -29,6 +29,7 @@
         android:scrollbars="vertical"
         android:singleLine="false"
         android:maxLines="15"
+        android:textSize="25dp"
         android:textColor="#000000"
 
     />

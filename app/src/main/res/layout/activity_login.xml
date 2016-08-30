@@ -62,16 +62,33 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="right"
+    android:layout_marginTop="30dp"
+    >
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/email_register_button"
                 style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="登录与注册"
+                android:text="注册"
+                android:layout_gravity="start"
                 android:textStyle="bold" />
-
+        <Button
+        android:id="@+id/email_sign_in_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="登录"
+        android:layout_gravity="end"
+        android:textStyle="bold" />
+</LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

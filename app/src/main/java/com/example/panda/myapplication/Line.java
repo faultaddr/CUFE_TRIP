@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 
 import android.os.Bundle;
 
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 
 import static java.lang.Integer.MAX_VALUE;
 
-public class Line extends Activity implements OnPageChangeListener {
+public class Line extends AppCompatActivity implements OnPageChangeListener {
     private static int k=0;
 
     private final String line_introduction1=
@@ -56,7 +57,7 @@ public class Line extends Activity implements OnPageChangeListener {
     private ViewPager viewPager;
 
     private PagerAdapter pageradapter;
-    public ImageView[] tips;
+
 
     public static ArrayList<ImageView> mImageViews=new ArrayList<>();
 
@@ -76,6 +77,7 @@ public class Line extends Activity implements OnPageChangeListener {
                     //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
                     viewPager.setCurrentItem((mImageViews.size()) * 100);
                     viewPager.setOnPageChangeListener(Line.this);
+
                     break;
                 default:
                     break;
@@ -88,7 +90,6 @@ public class Line extends Activity implements OnPageChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line);
-
 
         textView=(TextView) findViewById(R.id.mtext);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -116,6 +117,7 @@ public class Line extends Activity implements OnPageChangeListener {
                 imageView4.setBackgroundResource(imgIdArray[3]);
                 mmImageViews.add( imageView4);
                 mImageViews.addAll(mmImageViews);
+                textView.setText(textArray[0]);
                 Message msg = new Message();
                 msg.what = 0;
                 mHandler.sendMessage(msg);
@@ -150,7 +152,6 @@ public class Line extends Activity implements OnPageChangeListener {
             public Object instantiateItem(View container, int position) {
 
 
-                assert ((ViewPager) container) != null;
                 ((ViewPager) container).addView(mImageViews.get(position % mImageViews.size()), 0);
                 return mImageViews.get(position % mImageViews.size());
             }
@@ -172,22 +173,22 @@ public class Line extends Activity implements OnPageChangeListener {
         k=pos;
         switch(pos){
             case 0:
-                Toast toast1=Toast.makeText(this,line_introduction1,Toast.LENGTH_SHORT);
+                Toast toast1=Toast.makeText(getApplicationContext(),line_introduction1,Toast.LENGTH_SHORT);
                 toast1.show();
                 textView.setText(textArray[pos]);
                 break;
             case 1:
-                Toast toast2=Toast.makeText(this,line_introduction2,Toast.LENGTH_SHORT);
+                Toast toast2=Toast.makeText(getApplicationContext(),line_introduction2,Toast.LENGTH_SHORT);
                 toast2.show();
                 textView.setText(textArray[pos]);
                 break;
             case 2:
-                Toast toast3=Toast.makeText(this,line_introduction3,Toast.LENGTH_SHORT);
+                Toast toast3=Toast.makeText(getApplicationContext(),line_introduction3,Toast.LENGTH_SHORT);
                 toast3.show();
                 textView.setText(textArray[pos]);
                 break;
             case 3:
-                Toast toast4=Toast.makeText(this,line_introduction4,Toast.LENGTH_SHORT);
+                Toast toast4=Toast.makeText(getApplicationContext(),line_introduction4,Toast.LENGTH_SHORT);
                 toast4.show();
                 textView.setText(textArray[pos]);
 
@@ -220,11 +221,6 @@ public class Line extends Activity implements OnPageChangeListener {
     }
     // 初始化View
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，实现地图生命周期管理
-    }
 
 
 }

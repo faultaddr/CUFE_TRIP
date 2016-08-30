@@ -29,7 +29,7 @@ public class initViewPagerAdapter extends PagerAdapter implements OnPageChangeLi
     }
     @Override
     public Object instantiateItem(View container, int position) {
-        ((ViewPager)container).addView(imageview[position % imageview.length], 0);
+       ((ViewPager)container).addView(imageview[position % imageview.length], 0);
         return imageview[position % imageview.length];
     }
     @Override

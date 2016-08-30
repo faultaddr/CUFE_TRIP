@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -18,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -34,9 +38,12 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -49,7 +56,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    public static boolean bool=true;
+    public static boolean bool=false;
+    public static int record=0;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -89,14 +97,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         assert mEmailSignInButton != null;
+        Button mEmailLoginButton = (Button) findViewById(R.id.email_register_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                record=0;
                 attemptLogin();
 
             }
         });
-
+        mEmailLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                record=1;
+                attemptLogin();
+            }
+        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
@@ -290,7 +306,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
-}
+    }
 
 
     private interface ProfileQuery {
@@ -317,43 +333,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
         }
 
+
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            bool=true;
-            new Thread() {
-                public void run() {
-                    BmobQuery<User> bmobQuery = new BmobQuery<User>();
-                    bmobQuery.getObject(mEmail, new QueryListener<User>() {
 
-                        @Override
 
-                        public void done(User object, BmobException e) {
-                            if (e == null) {
-                                bool = true;
-                            } else {
-                                bool = false;
-                            }
+            if(record==0) {
+                BmobUser.loginByAccount(mEmail, mPassword, new LogInListener<User>() {
+
+                    @Override
+                    public void done(User user, BmobException e) {
+                        if(user!=null){
+                            bool=true;
+                            Log.i("smile","用户登陆成功");
                         }
-                    });
-                }}.start();
-                    if (!bool) {
-                        User p2 = new User();
-                        p2.setName(mEmail);
-                        p2.setKey(mPassword);
-                        p2.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String objectId, BmobException e) {
-                                if (e == null) {
-                                    bool = true;
-                                } else {
-                                    mEmailView.setError("name has already exist");
-                                    bool = false;
-                                }
-                            }
-                        });
+                        else bool=false;
                     }
+                });
+            }
+            else{
+                BmobUser bu = new BmobUser();
+                bu.setUsername(mEmail);
+                bu.setPassword(mPassword);
+                bu.setEmail(mEmail);
+//注意：不能用save方法进行注册
+                bu.signUp(new SaveListener<User>() {
+                    @Override
+                    public void done(User s, BmobException e) {
+                        if(e==null){
+                            Toast.makeText(getApplicationContext(),"注册成功",Toast.LENGTH_SHORT).show();
 
+                            bool=false;
+                            Log.i("bool", "" + bool);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"注册失败"+e.getMessage(),Toast.LENGTH_LONG).show();
+                            bool=false;
+                        }
+                    }
+                });
+                BmobUser.requestEmailVerify(mEmail, new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if(e==null){
+                            Log.i("memail",""+mEmail);
+                            Toast.makeText(getApplicationContext(),"请求验证邮件成功，请到" + mEmail + "邮箱中进行激活。",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Log.i("memail",""+mEmail);
+                            Log.i("e:",""+e.getMessage());
+                            Toast.makeText(getApplicationContext(),"发送失败:" + e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
 
             return bool;
         }
@@ -365,11 +397,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
 
-                    Intent intent = new Intent();
+                Intent intent = new Intent();
 
-                    intent.setClass(LoginActivity.this,MainActivity.class);
+                intent.setClass(LoginActivity.this,MainActivity.class);
 
-                    startActivity(intent);
+                startActivity(intent);
 
                 try {
                     Thread.sleep(1000);

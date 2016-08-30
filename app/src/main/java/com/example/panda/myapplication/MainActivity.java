@@ -16,8 +16,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,35 +33,41 @@ import cn.bmob.v3.Bmob;
 
 import static java.lang.Integer.MAX_VALUE;
 
-public class MainActivity extends Activity implements ViewPager.OnPageChangeListener,AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemClickListener {
+    private static boolean record=false;
     private ImageView Imageview;
     private ImageView Imageview_setting;
     private ImageView Imageview_enroll;
     private ViewPager viewPager;
     private PagerAdapter pageradapter;
     private TextView textview;
-    private static ArrayList<List_info> informations=new ArrayList<>();
+    private static ArrayList<List_info> informations = new ArrayList<>();
     private ListView listView;
-    public static ArrayList<ImageView> mImageViews=new ArrayList<>();
+    public static ArrayList<ImageView> mImageViews = new ArrayList<>();
     private int[] imgIdArray;
     private static String[] textIdArray;
-    private String[] text=new String[5];
-    public static int count=0;
+    private String[] text = new String[5];
+    public static int count = 0;
     public static Bitmap[] bmp = new Bitmap[5];
-    public Handler mHandler=new Handler()
-    {
+    public Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg)
-        {
+        public void handleMessage(Message msg) {
 
-            switch(msg.what)
-            {
+            switch (msg.what) {
                 case 0:
-                    viewPager.setAdapter(pageradapter);
+                    record=true;
                     //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
                     viewPager.setCurrentItem((mImageViews.size()) * 100);
+
                     viewPager.setOnPageChangeListener(MainActivity.this);
+                    viewPager.setAdapter(pageradapter);
                     break;
+                case 1:
+                    listView = (ListView) findViewById(R.id.listview);
+
+                    list_Adapter myListAdapter = new list_Adapter(MainActivity.this, informations);
+                    listView.setOnItemClickListener(MainActivity.this);
+                    listView.setAdapter(myListAdapter);
                 default:
                     break;
             }
@@ -66,24 +75,14 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
         }
 
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("CUFE_TRIP");
-        setContentView(R.layout.activity_main);
 
 
 
-        new Thread() {
-            public void run(){
-                Resources res = getResources();
-                bmp[0]=BitmapFactory.decodeResource(res,R.drawable.newone_small);
-                bmp[1]=BitmapFactory.decodeResource(res,R.drawable.newtwo_small);
-                bmp[2]=BitmapFactory.decodeResource(res,R.drawable.newthree_small);
-                bmp[3]=BitmapFactory.decodeResource(res,R.drawable.newfour_small);
-        }}.start();
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setPageTransformer(true, new DepthPageTransformer());
+
         //载入图片资源ID
         imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.new_three, R.drawable.newfour};
         textIdArray = new String[]{
@@ -101,13 +100,19 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
                         "路线人气：**\n"
         };
 
-        text[0]="线路1详情                        >>>>";
-        text[1]="线路2详情                        >>>>";
-        text[2]="线路3详情                        >>>>";
-        text[3]="线路4详情                        >>>>";
+        text[0] = "线路1详情                        >>>>";
+        text[1] = "线路2详情                        >>>>";
+        text[2] = "线路3详情                        >>>>";
+        text[3] = "线路4详情                        >>>>";
 
         new Thread() {
             public void run() {
+                Resources res = getResources();
+                bmp[0] = BitmapFactory.decodeResource(res, R.drawable.newone_small);
+                bmp[1] = BitmapFactory.decodeResource(res, R.drawable.newtwo_small);
+                bmp[2] = BitmapFactory.decodeResource(res, R.drawable.newthree_small);
+                bmp[3] = BitmapFactory.decodeResource(res, R.drawable.newfour_small);
+
                 for (
                         int i = 0;
                         i < textIdArray.length; i++)
@@ -116,39 +121,44 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
                     List_info list_info = new List_info(bmp[i], text[i]);
                     informations.add(list_info);
                 }
+                Message msg = new Message();
+                msg.what = 1;
+                mHandler.sendMessage(msg);
             }
         }.start();
-        listView =(ListView)findViewById(R.id.listview) ;
 
-        list_Adapter myListAdapter = new list_Adapter(MainActivity.this, informations);
-        listView.setOnItemClickListener(this);
-        listView.setAdapter(myListAdapter);
         //将图片\文字装载到数组中
         new Thread() {
-            public void run(){
+            public void run() {
                 ImageView imageView1 = new ImageView(MainActivity.this);
                 ImageView imageView2 = new ImageView(MainActivity.this);
                 ImageView imageView3 = new ImageView(MainActivity.this);
                 ImageView imageView4 = new ImageView(MainActivity.this);
-                ArrayList<ImageView>mmImageViews=new ArrayList<>();
-                imageView1.setBackgroundResource(imgIdArray[0]);
-                mmImageViews.add( imageView1);
-                imageView2.setBackgroundResource(imgIdArray[1]);
-                mmImageViews.add( imageView2);
-                imageView3.setBackgroundResource(imgIdArray[2]);
-                mmImageViews.add( imageView3);
-                imageView4.setBackgroundResource(imgIdArray[3]);
-                mmImageViews.add( imageView4);
+                ArrayList<ImageView> mmImageViews = new ArrayList<>();
+                imageView1.setImageResource(imgIdArray[0]);
+                imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView1);
+                imageView2.setImageResource(imgIdArray[1]);
+                imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView2);
+                imageView3.setImageResource(imgIdArray[2]);
+                imageView3.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView3);
+                imageView4.setImageResource(imgIdArray[3]);
+                imageView4.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView4);
                 mImageViews.addAll(mmImageViews);
                 Message msg = new Message();
                 msg.what = 0;
                 mHandler.sendMessage(msg);
-
             }
         }.start();
-
-
-        pageradapter=new PagerAdapter() {
+        setContentView(R.layout.activity_main);
+        textview = (TextView) findViewById(R.id.text);
+        textview.setText(textIdArray[0]);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setPageTransformer(true, new DepthPageTransformer());
+        pageradapter = new PagerAdapter() {
 
 
             @Override
@@ -166,22 +176,17 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
                 ((ViewPager) container).removeView(mImageViews.get(position % mImageViews.size()));
 
             }
-
             /**
              * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
              */
             @Override
             public Object instantiateItem(View container, int position) {
 
-
-                assert ((ViewPager) container) != null;
                 ((ViewPager) container).addView(mImageViews.get(position % mImageViews.size()), 0);
                 return mImageViews.get(position % mImageViews.size());
             }
 
         };
-
-
 
 
         //设置点击导航栏路线显示的内容。
@@ -230,9 +235,9 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
     public void onPageSelected(int position) {
         //System.out.println(position);
         int pos = position % 4;
-        count=pos;
+        count = pos;
 
-        textview = (TextView) findViewById(R.id.text);
+
         textview.setText(textIdArray[count]);
     }
 
@@ -249,34 +254,36 @@ public class MainActivity extends Activity implements ViewPager.OnPageChangeList
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         count = i;
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
 
                 Uri uri;
                 //intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
-                switch (count){
+                switch (count) {
                     case 0:
-                        uri=Uri.parse("http://baike.so.com/doc/4880706-5098585.html");
+                        uri = Uri.parse("http://baike.so.com/doc/4880706-5098585.html");
                         break;
                     case 1:
 
-                        uri=Uri.parse("http://www.chinanews.com/sh/2015/10-05/7555597_2.shtml");
+                        uri = Uri.parse("http://www.chinanews.com/sh/2015/10-05/7555597_2.shtml");
 
                         break;
                     case 2:
 
-                        uri=Uri.parse("http://baike.so.com/doc/7372469-7640406.html");
+                        uri = Uri.parse("http://baike.so.com/doc/7372469-7640406.html");
 
                         break;
                     default:
 
-                        uri=Uri.parse("http://baike.baidu.com/view/3067177.html");
+                        uri = Uri.parse("http://baike.baidu.com/view/3067177.html");
 
                         break;
                 }
-                Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
-            }}.start();}
+            }
+        }.start();
+    }
 
 }
 
