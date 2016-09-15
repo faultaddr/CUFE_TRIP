@@ -7,14 +7,14 @@
     <ImageView
         android:id="@+id/list_image"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
         />
     <TextView
         android:id="@+id/list_text"
         android:layout_width="wrap_content"
         android:gravity="center_vertical"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:textSize="16sp"
         android:layout_weight="2"
         android:layout_toRightOf="@+id/list_image"

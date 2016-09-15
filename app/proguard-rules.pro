@@ -19,4 +19,4 @@
 -keep class vi.com.** {*;}
 -dontwarn com.baidu.**
 
--keepattributes Exceptions, Signature, InnerClasses
+-keepattributes Exceptions, Signature, InnerClasses,EnclosingMetho

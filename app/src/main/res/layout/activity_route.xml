@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <include android:id="@+id/view1" layout="@layout/view1"></include>
+    <include android:id="@+id/view2" layout="@layout/view2"></include>
+    <include android:id="@+id/view3" layout="@layout/view3"></include>
+    <include android:id="@+id/view4" layout="@layout/view4"></include>
+</FrameLayout>

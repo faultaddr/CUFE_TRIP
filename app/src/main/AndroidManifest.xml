@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.panda.myapplication">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -22,13 +23,33 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STTE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <!-- BmobSDK所需的权限 -->
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 推送所需的权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name=".DemoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="CUFE_TRIP"
         android:supportsRtl="true"
+        tools:replace="android:label"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ATpiRlIlMRdL6NIlEhce1bod4tXWxqip" />
         <activity
             android:name=".initiateActivity"
             android:label="CUFE_TRIP"
@@ -38,6 +59,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -56,14 +78,93 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="CUFE_TRIP" />
+            android:label="CUFE_TRIP"
+            android:launchMode="singleInstance" />
+
         <activity
             android:name=".enroll"
             android:label="报名" />
         <activity
             android:name=".Line"
             android:label="路线" />
-        <activity android:name=".start"></activity>
+        <activity android:name=".start" />
+
+        <service
+            android:name="cn.bmob.push.lib.service.PushService"
+            android:exported="true"
+            android:label="PushService"
+            android:permission="cn.bmob.permission.push"
+            android:process="cn.bmob.push">
+            <intent-filter>
+                <action android:name="cn.bmob.push.lib.service.PushService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="cn.bmob.push.PushReceiver">
+            <intent-filter android:priority="2147483647">
+
+                <!-- 优先级加最高 -->
+                <!-- 系统启动完成后会调用 -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- 解锁完成后会调用 -->
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <!-- 监听网络连通性 -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".MyPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.bmob.push.action.MESSAGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".Route" />
+        <activity android:name=".Progress"></activity>
+        <activity
+            android:name=".search.RoutePlanDemo"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_route"
+            android:screenOrientation="portrait" >
+
+        </activity>
+        <activity
+            android:name=".search.GeoCoderDemo"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_geocode"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".search.BusLineSearchDemo"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_bus"
+            android:screenOrientation="portrait" >
+
+        </activity>
+        <activity
+            android:name=".search.DistrictSearchDemo"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_districsearch"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".search.PoiSearchDemo"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_poi"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".search.ShareDemo"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_share"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".search.ShareDemoActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/demo_name_share"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

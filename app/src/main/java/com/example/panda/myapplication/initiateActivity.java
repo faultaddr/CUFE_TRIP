@@ -26,6 +26,10 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import android.view.ViewGroup;
 
+import cn.bmob.push.BmobPush;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobInstallation;
+
 import static java.lang.Integer.MAX_VALUE;
 
 
@@ -124,15 +128,19 @@ if(i==0)    {
                 ImageView imageView2 = new ImageView(initiateActivity.this);
                 ImageView imageView3 = new ImageView(initiateActivity.this);
                 ImageView imageView4 = new ImageView(initiateActivity.this);
-                ArrayList<ImageView>mmImageViews=new ArrayList<>();
-                imageView1.setBackgroundResource(imgIdArray[0]);
-                mmImageViews.add( imageView1);
-                imageView2.setBackgroundResource(imgIdArray[1]);
-                mmImageViews.add( imageView2);
-                imageView3.setBackgroundResource(imgIdArray[2]);
-                mmImageViews.add( imageView3);
-                imageView4.setBackgroundResource(imgIdArray[3]);
-                mmImageViews.add( imageView4);
+                ArrayList<ImageView> mmImageViews = new ArrayList<>();
+                imageView1.setImageResource(imgIdArray[0]);
+                imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView1);
+                imageView2.setImageResource(imgIdArray[1]);
+                imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView2);
+                imageView3.setImageResource(imgIdArray[2]);
+                imageView3.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView3);
+                imageView4.setImageResource(imgIdArray[3]);
+                imageView4.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mmImageViews.add(imageView4);
                 mImageViews.addAll(mmImageViews);
                 Message msg = new Message();
                 msg.what = 0;

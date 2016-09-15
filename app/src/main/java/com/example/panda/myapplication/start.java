@@ -13,6 +13,8 @@ public class start extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         setContentView(R.layout.initiate);
         button=(Button)findViewById(R.id.start_main);
         button.setOnClickListener(this);

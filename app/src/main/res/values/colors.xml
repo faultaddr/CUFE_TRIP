@@ -9,10 +9,11 @@
     <color name="white"> #FFFFFF</color>
     <color name="red"> #FF0000</color>
     <color name="f850_default_blue">#0079ff</color>
-
+    <color name="background">#65828e</color>
     <drawable name="transparent">#00000000</drawable>
     <color name="transparent">#00000000</color>
-
+    <color name="main_color">#ff9a00</color>
+    <color name="secondary_color">#BDBDBD</color>
 
     <color name="header_toast_bg">#ccebfc</color>
     <color name="header_toast">#024ca1</color>

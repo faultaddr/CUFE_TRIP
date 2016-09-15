@@ -33,10 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -57,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     public static boolean bool=false;
-    public static int record=0;
+    public static boolean record=false;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -79,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
-        // Set up the login form.
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         //populateAutoComplete();
 
@@ -101,7 +105,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                record=0;
+
+                record=false;
+                Log.i("record",""+record);
                 attemptLogin();
 
             }
@@ -109,7 +115,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                record=1;
+                record=true;
+                Log.i("record",""+record);
                 attemptLogin();
             }
         });
@@ -117,52 +124,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
 
     }
-/*
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
 
-        getLoaderManager().initLoader(0, null, this);
-    }
-/*
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    /*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-    */
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -210,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            //showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute();
 
@@ -219,19 +181,64 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+
+    /**
+     * 判断是不是一个合法的电子邮件地址
+     * @param email
+     * @return
+     */
+
+
+
+
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
+            if (email == null || email.length() < 5) {
+                // #如果帐号小于5位，则肯定不可能为邮箱帐号eg: x@x.x
+                return false;
+            }
+            if (!email.contains("@")) {// 判断是否含有@符号
+                return false;// 没有@则肯定不是邮箱
+            }
+            String[] sAcc = email.split("@");
+            if (sAcc.length != 2) {// # 数组长度不为2则包含2个以上的@符号，不为邮箱帐号
+                return false;
+            }
+            if (sAcc[0].length() <= 0) {// #@前段为邮箱用户名，自定义的话至少长度为1，其他暂不验证
+                return false;
+            }
+            if (sAcc[1].length() < 3 || !sAcc[1].contains(".")) {
+                // # @后面为域名，位数小于3位则不为有效的域名信息
+                // #如果后端不包含.则肯定不是邮箱的域名信息
+                return false;
+            } else {
+                if (sAcc[1].substring(sAcc[1].length() - 1).equals(".")) {
+                    // # 最后一位不能为.结束
+                    return false;
+                }
+                String[] sDomain = sAcc[1].split("\\.");
+                // #将域名拆分 tm-sp.com 或者 .com.cn.xxx
+                for (String s : sDomain) {
+                    if (s.length() <= 0) {
+                        System.err.println(s);
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+        }
+
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
     }
 
     /**
      * Shows the progress UI and hides the login form.
      */
+
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -337,22 +344,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-
-            if(record==0) {
+            Log.i("record1",""+record);
+            if(record==false) {
                 BmobUser.loginByAccount(mEmail, mPassword, new LogInListener<User>() {
 
                     @Override
                     public void done(User user, BmobException e) {
                         if(user!=null){
                             bool=true;
-                            Log.i("smile","用户登陆成功");
+                            Log.i("smile","用户登陆成功"+bool);
                         }
                         else bool=false;
                     }
                 });
             }
-            else{
+            if(record==true){
                 BmobUser bu = new BmobUser();
                 bu.setUsername(mEmail);
                 bu.setPassword(mPassword);
@@ -365,7 +371,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.makeText(getApplicationContext(),"注册成功",Toast.LENGTH_SHORT).show();
 
                             bool=false;
-                            Log.i("bool", "" + bool);
+                            Log.i("bool1", "" + bool);
                         }else{
                             Toast.makeText(getApplicationContext(),"注册失败"+e.getMessage(),Toast.LENGTH_LONG).show();
                             bool=false;
@@ -386,28 +392,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 });
             }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             return bool;
+
         }
         //if successfully post then finish ,else setError "this password is incorrect"
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            //showProgress(false);
 
             if (success) {
 
                 Intent intent = new Intent();
 
-                intent.setClass(LoginActivity.this,MainActivity.class);
+                intent.setClass(LoginActivity.this,Progress.class);
 
                 startActivity(intent);
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 finish();
 
             } else {

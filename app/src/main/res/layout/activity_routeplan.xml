@@ -21,7 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="龙泽" >
+            android:text="中央财经大学沙河校区" >
 
             <requestFocus />
         </EditText>
@@ -44,7 +44,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="西单" >
+            android:text="十渡风景区" >
 
             <requestFocus />
         </EditText>
