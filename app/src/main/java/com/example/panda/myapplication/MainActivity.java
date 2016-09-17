@@ -15,10 +15,12 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,9 +43,9 @@ import static java.lang.Integer.MAX_VALUE;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemClickListener {
     private  boolean record = false;
-    private ImageView Imageview;
-    private ImageView Imageview_setting;
-    private ImageView Imageview_enroll;
+    private LinearLayout Imageview;
+    private LinearLayout Imageview_setting;
+    private LinearLayout Imageview_enroll;
     private ImageView weather;
     private ImageView calender;
     private ImageView require;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public  int count = 0;
     public  Bitmap[] bmp = new Bitmap[5];
     private ScheduledExecutorService scheduledExecutorService;
+
     private int current=0;
     public Handler mHandler = new Handler() {
         @Override
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         //Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
         // Set up the login form.
         // 使用推送服务时的初始化操作
@@ -348,19 +352,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             }
         });
         //设置点击导航栏路线显示的内容。
-        Imageview = (ImageView) findViewById(R.id.main_menu);
+
+        LayoutInflater inflater=null;
+        inflater = getLayoutInflater();
+        Imageview = (LinearLayout) findViewById(R.id.main_menu);
         Imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                //设置Intent的class属性，跳转到SecondActivity
+                //设置Intent的class属性，跳转到Route
                 intent.setClass(MainActivity.this, Route.class);
                 //启动Activity
                 startActivity(intent);
             }
         });
 
-        Imageview_setting = (ImageView) findViewById(R.id.setting);
+        Imageview_setting = (LinearLayout) findViewById(R.id.setting);
         Imageview_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -371,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 startActivity(intent);
             }
         });
-        Imageview_enroll = (ImageView) findViewById(R.id.enroll);
+        Imageview_enroll = (LinearLayout) findViewById(R.id.enroll);
         Imageview_enroll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -408,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         //每隔2秒钟切换一张图片
-        scheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 8, 1, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 8, 4, TimeUnit.SECONDS);
     }
 
     private class ViewPagerTask implements Runnable {
@@ -457,11 +464,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 @Override
     protected void onPause(){
     super.onPause();
+    scheduledExecutorService.shutdown();
 }
     @Override
     protected  void onStop(){
         super.onStop();
-        finish();
     }
 }
 

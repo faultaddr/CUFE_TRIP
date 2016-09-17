@@ -79,7 +79,7 @@
         <activity
             android:name=".MainActivity"
             android:label="CUFE_TRIP"
-            android:launchMode="singleInstance" />
+             />
 
         <activity
             android:name=".enroll"

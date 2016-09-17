@@ -40,40 +40,98 @@ public class Route extends AppCompatActivity{
         //ButterKnife.bind(this)
         // ;
         Log.i("hhhh","jkkk");
-        minflater = getLayoutInflater();
-        myview1 = (LinearLayout) minflater.inflate(R.layout.view1,null);
-        myview2 = (LinearLayout) minflater.inflate(R.layout.view2,null );
-        myview3 = (LinearLayout) minflater.inflate(R.layout.view3, null);
-        myview4 = (LinearLayout) minflater.inflate(R.layout.view4, null);
+        //minflater = getLayoutInflater();
+        myview1 = (LinearLayout) findViewById(R.id.view1);
+        myview2 = (LinearLayout) findViewById(R.id.view2);
+        myview3 = (LinearLayout) findViewById(R.id.view3);
+        myview4 = (LinearLayout) findViewById(R.id.view4);
         myview1.setVisibility(View.INVISIBLE);
         myview2.setVisibility(View.INVISIBLE);
         myview3.setVisibility(View.INVISIBLE);
-        myview4.setVisibility(View.INVISIBLE);
-        List.add(myview1);
-        List.add(myview2);
-        List.add(myview3);
-        List.add(myview4);
-        myview4.setOnClickListener(new View.OnClickListener() {
+        myview4.setVisibility(View.VISIBLE);
+        myview4.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
-            public void onClick(View v) {
-                showImage();
+
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("ssss","---->>>>4");
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_MOVE:
+                        switchframe();
+
+                }
+                return true;
             }
         });
-    }
-    private void showImage()
-    {
-        //myview1.setVisibility(View.VISIBLE);
-        count=count%4;
-        for(int i=0;i<4;i++)
-        {
-            LinearLayout v=(LinearLayout) List.get(i);
-            v.setVisibility(View.INVISIBLE);
-        }
-        LinearLayout v=(LinearLayout) List.get(count);
-        v.setVisibility(View.INVISIBLE);
-        count++;
-    }
+    myview3.setOnTouchListener(new View.OnTouchListener() {
 
+    @Override
+
+    public boolean onTouch(View v, MotionEvent event) {
+        Log.i("ssss","---->>>>3");
+        switch (event.getAction()){
+            case MotionEvent.ACTION_MOVE:
+                switchframe();
+
+        }
+        return true;
+    }
+});
+        myview2.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("ssss","---->>>>2");
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_MOVE:
+                        switchframe();
+
+                }
+                return true;
+            }
+        });
+        myview1.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("ssss","---->>>>1");
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_MOVE:
+                        switchframe();
+
+                }
+                return true;
+            }
+        });
+        List.add(myview4);
+        List.add(myview3);
+        List.add(myview2);
+        List.add(myview1);
+        //myview1.setVisibility(View.VISIBLE);
+
+
+
+    }
+public void switchframe(){
+    count++;
+    count=count%4;
+    for(int i=0;i<4;i++){
+        List.get(i).setVisibility(View.INVISIBLE);
+    }
+    List.get(count).setVisibility(View.VISIBLE);
+    List.get(count).setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()){
+            case MotionEvent.ACTION_MOVE:
+                switchframe();
+            }
+            return true;
+        }
+    });
+}
 @Override
     protected void onPause() {
     super.onPause();
