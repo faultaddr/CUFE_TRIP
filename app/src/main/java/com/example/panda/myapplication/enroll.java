@@ -12,10 +12,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.umeng.message.PushAgent;
+
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
+import static anetwork.channel.http.NetworkSdkSetting.context;
 
 
 public class enroll extends Activity {
@@ -37,6 +40,7 @@ public class enroll extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll);
+        PushAgent.getInstance(context).onAppStart();
         Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
         enroll_button = (Button) findViewById(R.id.enroll_button);
         spinner1 = (Spinner) findViewById(R.id.enroll_spinner1);

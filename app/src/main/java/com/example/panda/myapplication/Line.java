@@ -29,9 +29,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 
+import static anetwork.channel.http.NetworkSdkSetting.context;
 import static java.lang.Integer.MAX_VALUE;
 
 public class Line extends AppCompatActivity implements OnPageChangeListener {
@@ -90,7 +92,7 @@ public class Line extends AppCompatActivity implements OnPageChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line);
-
+        PushAgent.getInstance(context).onAppStart();
         textView=(TextView) findViewById(R.id.mtext);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());

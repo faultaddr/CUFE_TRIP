@@ -3,7 +3,10 @@ package com.example.panda.myapplication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -33,15 +36,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.umeng.message.PushAgent;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
-import cn.bmob.push.BmobPush;
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobInstallation;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
@@ -50,6 +50,7 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static anetwork.channel.http.NetworkSdkSetting.context;
 
 /**
  * A login screen that offers login via email/password.
@@ -62,16 +63,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
     public static boolean bool=false;
     public static boolean record=false;
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
-
+    private int i;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -82,12 +75,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
+        PushAgent.getInstance(context).onAppStart();
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         //populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        try {
+            //创建SharedPreferences对象
+            SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
+
+            //获得保存在SharedPredPreferences中的用户名和密码
+            String user_name = sp.getString("username", "");
+            String pass_word = sp.getString("password", "");
+            if (user_name.length()>0){
+                mEmailView.setText(user_name);
+                mPasswordView.setText(pass_word);
+            }
+            //在用户名和密码的输入框中显示用户名和密码
+
+        }catch(Exception excepton){
+
+        }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -136,50 +145,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return;
         }
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            //showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute();
 
 
-        }
 
-    }
+
+                // Reset errors.
+                mEmailView.setError(null);
+                mPasswordView.setError(null);
+
+                // Store values at the time of the login attempt.
+                String email = mEmailView.getText().toString();
+                String password = mPasswordView.getText().toString();
+
+                boolean cancel = false;
+                View focusView = null;
+
+                // Check for a valid password, if the user entered one.
+                if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    focusView = mPasswordView;
+                    cancel = true;
+                }
+
+                // Check for a valid email address.
+                if (TextUtils.isEmpty(email)) {
+                    mEmailView.setError(getString(R.string.error_field_required));
+                    focusView = mEmailView;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmailView.setError(getString(R.string.error_invalid_email));
+                    focusView = mEmailView;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    // There was an error; don't attempt login and focus the first
+                    // form field with an error.
+                    focusView.requestFocus();
+                } else {
+                    // Show a progress spinner, and kick off a background task to
+                    // perform the user login attempt.
+                    //showProgress(true);
+
+                    mAuthTask = new UserLoginTask(email, password);
+                    mAuthTask.execute();
+
+
+                }
+            }
+
 
 
     /**
@@ -401,6 +415,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return bool;
 
         }
+
+        public void record(){
+
+                SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
+
+                //获得sp的编辑器
+                SharedPreferences.Editor ed = sp.edit();
+
+                //以键值对的显示将用户名和密码保存到sp中
+                ed.putString("username", mEmail);
+                ed.putString("password", mPassword);
+
+                //提交用户名和密码
+                ed.commit();
+            }
+
+
+
         //if successfully post then finish ,else setError "this password is incorrect"
         @Override
         protected void onPostExecute(final Boolean success) {
@@ -408,7 +440,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //showProgress(false);
 
             if (success) {
-
+                record();
                 Intent intent = new Intent();
 
                 intent.setClass(LoginActivity.this,Progress.class);

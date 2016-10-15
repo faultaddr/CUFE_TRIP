@@ -17,10 +17,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.plus.model.people.Person;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+
+import static anetwork.channel.http.NetworkSdkSetting.context;
 
 public class Route extends AppCompatActivity{
     LayoutInflater minflater;
@@ -35,6 +38,7 @@ public class Route extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PushAgent.getInstance(context).onAppStart();
         setContentView(R.layout.activity_route);
         FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
         //ButterKnife.bind(this)

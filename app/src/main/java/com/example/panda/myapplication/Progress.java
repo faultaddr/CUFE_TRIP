@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
+import com.umeng.message.PushAgent;
+
+import static anetwork.channel.http.NetworkSdkSetting.context;
 
 public class Progress extends Activity {
 
@@ -15,6 +18,7 @@ public class Progress extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_progress);
+            PushAgent.getInstance(context).onAppStart();
             animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
             startLoading();
             startPercentMockThread();

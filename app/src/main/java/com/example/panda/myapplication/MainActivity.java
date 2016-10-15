@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import com.example.panda.myapplication.search.BusLineSearchDemo;
 import com.example.panda.myapplication.search.PoiSearchDemo;
 import com.example.panda.myapplication.search.RoutePlanDemo;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -34,11 +36,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
-import cn.bmob.push.BmobPush;
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobInstallation;
 
 
+
+import static anetwork.channel.http.NetworkSdkSetting.context;
 import static java.lang.Integer.MAX_VALUE;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemClickListener {
@@ -108,11 +109,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
 
     };
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            //actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setLogo(R.mipmap.ic_launcher);
+            actionBar.setDisplayUseLogoEnabled(true);
 
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        setupActionBar();
+        PushAgent.getInstance(context).onAppStart();
         //Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
         // Set up the login form.
         // 使用推送服务时的初始化操作

@@ -35,9 +35,21 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!-- 推送所需的权限 -->
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <!-- Push service 运行需要的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 富媒体需要声明的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
 
     <application
         android:name=".DemoApplication"
@@ -50,6 +62,16 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="ATpiRlIlMRdL6NIlEhce1bod4tXWxqip" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5802606b67e58e4122002464">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="c98024a819f30b945da6d678ca0354e6">
+        </meta-data>
+
         <activity
             android:name=".initiateActivity"
             android:label="CUFE_TRIP"
@@ -79,6 +101,7 @@
         <activity
             android:name=".MainActivity"
             android:label="CUFE_TRIP"
+            android:logo="@mipmap/ic_launcher"
              />
 
         <activity
@@ -89,34 +112,7 @@
             android:label="路线" />
         <activity android:name=".start" />
 
-        <service
-            android:name="cn.bmob.push.lib.service.PushService"
-            android:exported="true"
-            android:label="PushService"
-            android:permission="cn.bmob.permission.push"
-            android:process="cn.bmob.push">
-            <intent-filter>
-                <action android:name="cn.bmob.push.lib.service.PushService" />
-            </intent-filter>
-        </service>
 
-        <receiver android:name="cn.bmob.push.PushReceiver">
-            <intent-filter android:priority="2147483647">
-
-                <!-- 优先级加最高 -->
-                <!-- 系统启动完成后会调用 -->
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <!-- 解锁完成后会调用 -->
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <!-- 监听网络连通性 -->
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".MyPushMessageReceiver">
-            <intent-filter>
-                <action android:name="cn.bmob.push.action.MESSAGE" />
-            </intent-filter>
-        </receiver>
 
         <activity android:name=".Route" />
         <activity android:name=".Progress"></activity>
