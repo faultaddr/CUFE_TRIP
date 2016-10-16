@@ -33,9 +33,9 @@ public class Progress extends Activity {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(500);
                         for (int i = 0; i <= 100; i++) {
-                            Thread.sleep(65);
+                            Thread.sleep(20);
                             changePercent(i);
                         }
                         Intent intent=new Intent();

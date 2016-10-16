@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Message;
 
 import android.support.v4.view.PagerAdapter;
@@ -47,14 +48,14 @@ public class initiateActivity extends Activity implements OnPageChangeListener {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     public  int i=0;
-
+    private onjudge mAuthTask = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onJudge();//判断是否是第一次下载应用
 
         initView();//初始化图片加载
-
+        mAuthTask = new onjudge();
+        mAuthTask.execute();
         PushAgent.getInstance(context).onAppStart();
         setContentView(R.layout.activity_initiate);
 
@@ -119,27 +120,7 @@ public class initiateActivity extends Activity implements OnPageChangeListener {
         }
 
     };
-    private void onJudge(){
-        SharedPreferences share=getSharedPreferences("first",Activity.MODE_WORLD_READABLE);
-        i=share.getInt("first",0);
 
-
-
-        if(i==0)    {
-
-            SharedPreferences sharedPreferences = getSharedPreferences("first", Context.MODE_PRIVATE); //私有数据
-            SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
-            editor.putInt("first", 1);
-            editor.commit();//提交修改
-        }
-
-        else{
-            Intent intent = new Intent();
-            intent.setClass(initiateActivity.this, start.class);
-            startActivity(intent);
-            finish();
-        }
-    }
 
     private void initView(){
         imgIdArray = new int[]{R.drawable.first, R.drawable.second, R.drawable.third, R.drawable.forth};
@@ -211,5 +192,39 @@ public class initiateActivity extends Activity implements OnPageChangeListener {
     public void onDestroy(){
         super.onDestroy();
     }
+    public class onjudge extends AsyncTask<Void, Void, Integer>{
 
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+                SharedPreferences share=getSharedPreferences("first",Activity.MODE_WORLD_READABLE);
+                i=share.getInt("first",0);
+
+
+
+                if(i==0)    {
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("first", Context.MODE_PRIVATE); //私有数据
+                    SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+                    editor.putInt("first", 1);
+                    editor.commit();//提交修改
+                }
+
+
+
+
+            return i;
+        }
+
+        @Override
+        protected void onPostExecute(final Integer success) {
+            mAuthTask = null;
+            if(success!=0){
+                    Intent intent = new Intent();
+                    intent.setClass(initiateActivity.this, start.class);
+                    startActivity(intent);
+                    finish();
+            }
+        }
+    }
 }

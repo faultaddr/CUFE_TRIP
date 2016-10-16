@@ -53,69 +53,14 @@ public class Route extends AppCompatActivity{
         myview2.setVisibility(View.INVISIBLE);
         myview3.setVisibility(View.INVISIBLE);
         myview4.setVisibility(View.VISIBLE);
-        myview4.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.i("ssss","---->>>>4");
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_MOVE:
-                        switchframe();
-
-                }
-                return true;
-            }
-        });
-    myview3.setOnTouchListener(new View.OnTouchListener() {
-
-    @Override
-
-    public boolean onTouch(View v, MotionEvent event) {
-        Log.i("ssss","---->>>>3");
-        switch (event.getAction()){
-            case MotionEvent.ACTION_MOVE:
-                switchframe();
-
-        }
-        return true;
-    }
-});
-        myview2.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.i("ssss","---->>>>2");
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_MOVE:
-                        switchframe();
-
-                }
-                return true;
-            }
-        });
-        myview1.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.i("ssss","---->>>>1");
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_MOVE:
-                        switchframe();
-
-                }
-                return true;
-            }
-        });
         List.add(myview4);
         List.add(myview3);
         List.add(myview2);
         List.add(myview1);
         //myview1.setVisibility(View.VISIBLE);
 
-
+        switchframe();
 
     }
 public void switchframe(){
@@ -128,6 +73,7 @@ public void switchframe(){
     List.get(count).setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            Log.i(">>>","fafdsa");
             switch (event.getAction()){
             case MotionEvent.ACTION_MOVE:
                 switchframe();

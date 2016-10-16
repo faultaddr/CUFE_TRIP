@@ -148,7 +148,7 @@
 
                 android:background="#ffffff"
 
-                android:layout_height="50dp">
+                android:layout_height="wrap_content">
                 <GridView
                     android:id="@+id/gridview"
                     android:background="#ffffff"
