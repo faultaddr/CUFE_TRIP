@@ -40,7 +40,7 @@ public class enroll extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll);
-        PushAgent.getInstance(context).onAppStart();
+        //PushAgent.getInstance(context).onAppStart();
         Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
         enroll_button = (Button) findViewById(R.id.enroll_button);
         spinner1 = (Spinner) findViewById(R.id.enroll_spinner1);

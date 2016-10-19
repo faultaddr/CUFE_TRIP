@@ -23,7 +23,7 @@ public class start extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         String path=null;
         super.onCreate(savedInstanceState);
-        PushAgent.getInstance(context).onAppStart();
+        //PushAgent.getInstance(context).onAppStart();
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.initiate);

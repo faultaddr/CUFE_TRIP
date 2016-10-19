@@ -75,12 +75,12 @@
             android:name=".initiateActivity"
             android:label="CUFE_TRIP"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -113,7 +113,9 @@
 
 
 
-        <activity android:name=".Route" />
+        <activity android:name=".Route">
+
+    </activity>
         <activity android:name=".Progress"></activity>
         <activity
             android:name=".search.RoutePlanDemo"

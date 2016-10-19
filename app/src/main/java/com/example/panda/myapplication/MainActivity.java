@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-        PushAgent.getInstance(context).onAppStart();
+        //PushAgent.getInstance(context).onAppStart();
         //Bmob.initialize(this, "b2a75d2c36f8166500b4c27832a78bb8");
         // Set up the login form.
         // 使用推送服务时的初始化操作

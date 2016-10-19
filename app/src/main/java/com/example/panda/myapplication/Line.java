@@ -92,7 +92,7 @@ public class Line extends AppCompatActivity implements OnPageChangeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line);
-        PushAgent.getInstance(context).onAppStart();
+        //PushAgent.getInstance(context).onAppStart();
         textView=(TextView) findViewById(R.id.mtext);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());

@@ -52,11 +52,11 @@ public class initiateActivity extends Activity implements OnPageChangeListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.initiate);
         initView();//初始化图片加载
         mAuthTask = new onjudge();
         mAuthTask.execute();
-        PushAgent.getInstance(context).onAppStart();
+        //PushAgent.getInstance(context).onAppStart();
         setContentView(R.layout.activity_initiate);
 
         mviewPager = (ViewPager) findViewById(R.id.initviewPager);

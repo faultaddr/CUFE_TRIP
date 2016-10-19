@@ -18,7 +18,7 @@ public class Progress extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_progress);
-            PushAgent.getInstance(context).onAppStart();
+            //PushAgent.getInstance(context).onAppStart();
             animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
             startLoading();
             startPercentMockThread();
