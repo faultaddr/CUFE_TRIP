@@ -1,2 +1,2 @@
-include ':app', ':library', ':PushSDK', ':cardstack', ':cardstack1'
+include ':app', ':library', ':PushSDK'
 
