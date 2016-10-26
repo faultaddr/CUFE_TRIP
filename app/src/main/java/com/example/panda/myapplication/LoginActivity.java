@@ -3,13 +3,10 @@ package com.example.panda.myapplication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -41,19 +38,33 @@ import com.umeng.message.PushAgent;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadBatchListener;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static anetwork.channel.http.NetworkSdkSetting.context;
 
 /**
  * A login screen that offers login via email/password.
+ */
+/*
+
+TODO:- 我们在这里可以使用sqlite简单的数据库，进行用户查询，只要用户在这台手机上登录过
+TODO:- 那么我们就可以把用户名密码存到本地的数据库，在登录时，我们首先在本地进行查询，如果
+TODO:- 发现没有相应的用户，再从bmob端数据库获取相关信息。
+
+
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -70,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    final Lock lock = new ReentrantLock();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -358,63 +369,87 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+
+
+
             Log.i("record1",""+record);
-            if(record==false) {
-                BmobUser.loginByAccount(mEmail, mPassword, new LogInListener<User>() {
 
-                    @Override
-                    public void done(User user, BmobException e) {
-                        if(user!=null){
-                            bool=true;
-                            Log.i("smile","用户登陆成功"+bool);
+                        if (record == false)
+
+                        {
+                            new Thread(){
+                            public void run() {
+
+                                BmobUser.loginByAccount(mEmail, mPassword, new LogInListener<User>() {
+
+                                    @Override
+                                    public void done(User user, BmobException e) {
+                                        if (user != null) {
+                                            bool = true;
+
+                                            Log.i("smile", "用户登陆成功" + bool);
+                                        } else bool = false;
+                                    }
+                                });
+                            }}.start();
                         }
-                        else bool=false;
-                    }
-                });
-            }
-            if(record==true){
-                BmobUser bu = new BmobUser();
-                bu.setUsername(mEmail);
-                bu.setPassword(mPassword);
-                bu.setEmail(mEmail);
+
+                        if (record == true)
+
+                        {
+                            BmobUser bu = new BmobUser();
+                            bu.setUsername(mEmail);
+                            bu.setPassword(mPassword);
+                            bu.setEmail(mEmail);
 //注意：不能用save方法进行注册
-                bu.signUp(new SaveListener<User>() {
-                    @Override
-                    public void done(User s, BmobException e) {
-                        if(e==null){
-                            Toast.makeText(getApplicationContext(),"注册成功",Toast.LENGTH_SHORT).show();
 
-                            bool=false;
-                            Log.i("bool1", "" + bool);
-                        }else{
-                            Toast.makeText(getApplicationContext(),"注册失败"+e.getMessage(),Toast.LENGTH_LONG).show();
-                            bool=false;
+                            bu.signUp(new SaveListener<User>() {
+                                @Override
+                                public void done(User s, BmobException e) {
+                                    if (e == null) {
+                                        Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
+
+                                        bool = false;
+                                        Log.i("bool1", "" + bool);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "注册失败" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        bool = false;
+                                    }
+
+                                }
+                            });
+                            BmobUser.requestEmailVerify(mEmail, new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        Log.i("memail", "" + mEmail);
+                                        Toast.makeText(getApplicationContext(), "请求验证邮件成功，请到" + mEmail + "邮箱中进行激活。", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Log.i("memail", "" + mEmail);
+                                        Log.i("e:", "" + e.getMessage());
+                                        Toast.makeText(getApplicationContext(), "发送失败:" + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                         }
-                    }
-                });
-                BmobUser.requestEmailVerify(mEmail, new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        if(e==null){
-                            Log.i("memail",""+mEmail);
-                            Toast.makeText(getApplicationContext(),"请求验证邮件成功，请到" + mEmail + "邮箱中进行激活。",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Log.i("memail",""+mEmail);
-                            Log.i("e:",""+e.getMessage());
-                            Toast.makeText(getApplicationContext(),"发送失败:" + e.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
+            /*
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+*/
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.i(">>>>>", ""+bool);
 
-            return bool;
 
-        }
+                return bool;
+
+            }
 
         public void record(){
 
@@ -428,7 +463,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 ed.putString("password", mPassword);
 
                 //提交用户名和密码
-                ed.commit();
+                ed.apply();
             }
 
 

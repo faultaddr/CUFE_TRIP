@@ -97,7 +97,7 @@ public class Line extends AppCompatActivity implements OnPageChangeListener {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         //载入图片资源ID
-        imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.new_three, R.drawable.newfour};
+        imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.newthree, R.drawable.newfour};
         textArray=new int[]{
                 R.string.point1,R.string.point2,R.string.point1,R.string.point2};
 

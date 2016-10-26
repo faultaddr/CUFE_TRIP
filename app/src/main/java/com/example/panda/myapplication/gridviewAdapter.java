@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ public class gridviewAdapter extends BaseAdapter
                     R.drawable.poi_search,
 
             };
-    private String text[]={
+    private String mtext[]={
             "路线查询","公交查询","附近查询"
     };
     public gridviewAdapter(Context c)
@@ -53,27 +54,15 @@ public class gridviewAdapter extends BaseAdapter
 
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        ImageView imageView;
+        View view=View.inflate(mContext,R.layout.activity_gridview,null);
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.RelativeLayout1);
 
-        if (convertView == null)
-        {
-            // 给ImageView设置资源
-            imageView = new ImageView(mContext);
+        ImageView image = (ImageView) rl.findViewById(R.id.image_item);
+        TextView text = (TextView) rl.findViewById(R.id.text_item);
 
-
-            // 设置布局 图片120×120显示
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            // 设置显示比例类型
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-        }
-        else {
-            imageView = (ImageView) convertView;
-
-
-        }
-        imageView.setImageResource(mImageIds[position]);
-        return imageView;
+        image.setImageResource(mImageIds[position]);
+        text.setText(mtext[position]);
+        return view;
     }
 
 }

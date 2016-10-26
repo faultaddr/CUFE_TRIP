@@ -148,7 +148,7 @@
 
                 android:background="#ffffff"
 
-                android:layout_height="wrap_content">
+                android:layout_height="70dp">
                 <GridView
                     android:id="@+id/gridview"
                     android:background="#ffffff"
@@ -204,7 +204,9 @@
         android:layout_weight="0.10"
         android:background="#ffffff"
         android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="4"
+        >
 
         <LinearLayout
             android:id="@+id/main_menu"
@@ -258,9 +260,8 @@
                 android:text="报名"
                 android:textSize="16sp" />
         </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/setting"
+            android:id="@+id/mine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -273,9 +274,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:background="#ffffff"
-                android:src="@drawable/setting"
-
-                />
+                android:src="@drawable/mypic" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -285,7 +284,29 @@
                 android:text="我的"
                 android:textSize="16sp" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="#ffffff"
+                android:src="@drawable/setting"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:gravity="center_horizontal"
+                android:text="设置"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

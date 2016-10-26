@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -41,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 
 import static anetwork.channel.http.NetworkSdkSetting.context;
 import static java.lang.Integer.MAX_VALUE;
+
+
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemClickListener {
     private  boolean record = false;
@@ -67,59 +70,12 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public  int count = 0;
     public  Bitmap[] bmp = new Bitmap[5];
     private ScheduledExecutorService scheduledExecutorService;
-
+    private boolean judge=false;
     private int current=0;
-    public Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-
-            switch (msg.what) {
-                case 0:
-                    record = true;
-                    //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
-
-
-                    //viewPager.setCurrentItem((mImageViews.size()) * 100);
-
-                    //viewPager.setOnPageChangeListener(MainActivity.this);
-                    viewPager.setAdapter(pageradapter);
-                    viewPager1.setAdapter(pageradapter1);
-                    break;
-                case 1:
-                    listView = (ListView) findViewById(R.id.listview);
-
-                    list_Adapter myListAdapter = new list_Adapter(MainActivity.this, informations);
-                    listView.setOnItemClickListener(MainActivity.this);
-                    listView.setAdapter(myListAdapter);
-                    break;
-                case 2:
-                    //viewPager1.setCurrentItem((mImageViews1.size()) * 100);
-
-                    //viewPager1.setOnPageChangeListener(MainActivity.this);
-
-                    break;
-                default:
-
-                    viewPager.setCurrentItem(current);
-                    viewPager1.setCurrentItem(current);
-                    current++;
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-
-    };
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            //actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setLogo(R.mipmap.ic_launcher);
-            actionBar.setDisplayUseLogoEnabled(true);
-
-        }
-    }
+    private int current1=0;
+/*
+TODO:做图片的异步加载，从Bmob中获取图片地址，然后按加载网络图片的方法去加载图片。
+ */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,74 +91,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 
         //载入图片资源ID
-        imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.new_three, R.drawable.newfour};
-        imgIdArray1 = new int[]{R.drawable.view5, R.drawable.view6, R.drawable.view7, R.drawable.view8};
-        textIdArray = new String[]{
-                "路线1简介：北京周边一日游\n" +
-                        "路线开销：200元/人\n" +
-                        "路线人气：***\n",
-                "路线2简介：北京周边一日游\n" +
-                        "路线开销：180元/人\n" +
-                        "路线人气：****\n",
-                "路线3简介：北京周边一日游\n" +
-                        "路线开销：170元/人\n" +
-                        "路线人气：*****\n",
-                "路线4简介：北京周边一日游\n" +
-                        "路线开销：160元/人\n" +
-                        "路线人气：**\n"
-        };
+        InitView();
 
-        text[0] = "线路1详情                        >>>>";
-        text[1] = "线路2详情                        >>>>";
-        text[2] = "线路3详情                        >>>>";
-        text[3] = "线路4详情                        >>>>";
-
-        new Thread() {
-            public void run() {
-                Resources res = getResources();
-                bmp[0] = BitmapFactory.decodeResource(res, R.drawable.newone_small);
-                bmp[1] = BitmapFactory.decodeResource(res, R.drawable.newtwo_small);
-                bmp[2] = BitmapFactory.decodeResource(res, R.drawable.newthree_small);
-                bmp[3] = BitmapFactory.decodeResource(res, R.drawable.newfour_small);
-                for (int i = 0;i < textIdArray.length; i++) {
-                    List_info list_info = new List_info(bmp[i], text[i]);
-                    informations.add(list_info);
-                }
-
-                Message msg = new Message();
-                msg.what = 1;
-                mHandler.sendMessage(msg);
-            }
-        }.start();
-
-        //将图片\文字装载到数组中
-        new Thread() {
-            public void run() {
-                ImageView imageView1 = new ImageView(MainActivity.this);
-                ImageView imageView2 = new ImageView(MainActivity.this);
-                ImageView imageView3 = new ImageView(MainActivity.this);
-                ImageView imageView4 = new ImageView(MainActivity.this);
-                ArrayList<ImageView> mmImageViews = new ArrayList<>();
-                mmImageViews.add(imageView1);
-                mmImageViews.add(imageView2);
-                mmImageViews.add(imageView3);
-                mmImageViews.add(imageView4);
-                mImageViews.addAll(mmImageViews);
-                ImageView imageView11 = new ImageView(MainActivity.this);
-                ImageView imageView22 = new ImageView(MainActivity.this);
-                ImageView imageView33 = new ImageView(MainActivity.this);
-                ImageView imageView44 = new ImageView(MainActivity.this);
-                ArrayList<ImageView> mmImageViews1 = new ArrayList<>();
-                mmImageViews1.add(imageView11);
-                mmImageViews1.add(imageView22);
-                mmImageViews1.add(imageView33);
-                mmImageViews1.add(imageView44);
-                mImageViews1.addAll(mmImageViews1);
-                Message msg = new Message();
-                msg.what = 0;
-                mHandler.sendMessage(msg);
-            }
-        }.start();
 
 
 
@@ -241,73 +131,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         viewPager.setPageTransformer(true, new DepthPageTransformer());
         viewPager1.setPageTransformer(true, new ZoomOutPageTransformer());
 
-        pageradapter = new PagerAdapter() {
+        //设置适配器
+        PagerAdapter();
 
 
-            @Override
-            public int getCount() {
-                return MAX_VALUE;
-            }
 
-            @Override
-            public boolean isViewFromObject(View arg0, Object arg1) {
-                return arg0 == arg1;
-            }
-
-            @Override
-            public void destroyItem(View container, int position, Object object) {
-                Log.i("destroy--->>>",""+position);
-                ((ViewPager) container).removeView(mImageViews.get(position % mImageViews.size()));
-
-            }
-
-            /**
-             * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
-             */
-            @Override
-            public Object instantiateItem(View container, int position) {
-                Log.i("pos--->>",""+position);
-                int pos = position % 4;
-                count = pos;
-                textview.setText(textIdArray[count]);
-                mImageViews.get(position % mImageViews.size()).setBackgroundResource(imgIdArray[position % mImageViews.size()]);
-                ((ViewPager) container).addView(mImageViews.get(position % mImageViews.size()), 0);
-                return mImageViews.get(position % mImageViews.size());
-
-            }
-
-        };
-
-        pageradapter1 = new PagerAdapter() {
-
-
-            @Override
-            public int getCount() {
-                return MAX_VALUE;
-            }
-
-            @Override
-            public boolean isViewFromObject(View arg0, Object arg1) {
-                return arg0 == arg1;
-            }
-
-            @Override
-            public void destroyItem(View container, int position, Object object) {
-                ((ViewPager) container).removeView(mImageViews1.get(position % mImageViews1.size()));
-
-            }
-
-            /**
-             * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
-             */
-            @Override
-            public Object instantiateItem(View container, int position) {
-                mImageViews1.get(position % mImageViews1.size()).setBackgroundResource(imgIdArray1[position % mImageViews1.size()]);
-                ((ViewPager) container).addView(mImageViews1.get(position % mImageViews1.size()), 0);
-                return mImageViews1.get(position % mImageViews1.size());
-            }
-
-        };
         weather = (ImageView) findViewById(R.id.weather);
         weather.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -403,9 +231,219 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         });
     }
 
+    private void InitView() {
+/*
+        imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.newthree, R.drawable.newfour};
+  */
+        imgIdArray1 = new int[]{R.drawable.view5, R.drawable.view6, R.drawable.view7, R.drawable.view8};
+        textIdArray = new String[]{
+                "路线1简介：北京周边一日游\n" +
+                        "路线开销：200元/人\n" +
+                        "路线人气：***\n",
+                "路线2简介：北京周边一日游\n" +
+                        "路线开销：180元/人\n" +
+                        "路线人气：****\n",
+                "路线3简介：北京周边一日游\n" +
+                        "路线开销：170元/人\n" +
+                        "路线人气：*****\n",
+                "路线4简介：北京周边一日游\n" +
+                        "路线开销：160元/人\n" +
+                        "路线人气：**\n"
+        };
+
+        text[0] = "线路1详情                        >>>>";
+        text[1] = "线路2详情                        >>>>";
+        text[2] = "线路3详情                        >>>>";
+        text[3] = "线路4详情                        >>>>";
+
+        new Thread() {
+            public void run() {
+                Resources res = getResources();
+                bmp[0] = BitmapFactory.decodeResource(res, R.drawable.newone_small);
+                bmp[1] = BitmapFactory.decodeResource(res, R.drawable.newtwo_small);
+                bmp[2] = BitmapFactory.decodeResource(res, R.drawable.newthree_small);
+                bmp[3] = BitmapFactory.decodeResource(res, R.drawable.newfour_small);
+                for (int i = 0;i < textIdArray.length; i++) {
+                    List_info list_info = new List_info(bmp[i], text[i]);
+                    informations.add(list_info);
+                }
+
+                Message msg = new Message();
+                msg.what = 1;
+                mHandler.sendMessage(msg);
+            }
+        }.start();
+
+        //将图片\文字装载到数组中
+        new Thread() {
+            public void run() {
+                ImageView imageView1 = new ImageView(MainActivity.this);
+                ImageView imageView2 = new ImageView(MainActivity.this);
+                ImageView imageView3 = new ImageView(MainActivity.this);
+                ImageView imageView4 = new ImageView(MainActivity.this);
+                ArrayList<ImageView> mmImageViews = new ArrayList<>();
+                mmImageViews.add(imageView1);
+                mmImageViews.add(imageView2);
+                mmImageViews.add(imageView3);
+                mmImageViews.add(imageView4);
+                mImageViews.addAll(mmImageViews);
+
+                ImageView imageView11 = new ImageView(MainActivity.this);
+                ImageView imageView22 = new ImageView(MainActivity.this);
+                ImageView imageView33 = new ImageView(MainActivity.this);
+                ImageView imageView44 = new ImageView(MainActivity.this);
+                ArrayList<ImageView> mmImageViews1 = new ArrayList<>();
+                mmImageViews1.add(imageView11);
+                mmImageViews1.add(imageView22);
+                mmImageViews1.add(imageView33);
+                mmImageViews1.add(imageView44);
+                mImageViews1.addAll(mmImageViews1);
+                Message msg = new Message();
+                msg.what = 0;
+                mHandler.sendMessage(msg);
+            }
+        }.start();
+
+
+    }
+
+    private void PagerAdapter(){
+
+
+        pageradapter = new PagerAdapter() {
+
+
+            @Override
+            public int getCount() {
+                return MAX_VALUE;
+            }
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                return arg0 == arg1;
+            }
+
+            @Override
+            public void destroyItem(View container, int position, Object object) {
+                Log.i("destroy--->>>",""+position);
+                ((ViewPager) container).removeView(mImageViews.get(position % mImageViews.size()));
+
+            }
+
+            /**
+             * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
+             */
+
+            @Override
+            public Object instantiateItem(View container, int position) {
+                Log.i("pos--->>",""+position);
+                int pos = position % 4;
+                current = position;
+                textview.setText(textIdArray[pos]);
+                mImageViews.get(position % mImageViews.size()).setScaleType(ImageView.ScaleType.FIT_XY);
+                ((ViewPager) container).addView(mImageViews.get(position % mImageViews.size()), 0);
+                return mImageViews.get(position % mImageViews.size());
+
+            }
+
+        };
+
+        pageradapter1 = new PagerAdapter() {
+
+
+            @Override
+            public int getCount() {
+                return MAX_VALUE;
+            }
+
+            @Override
+            public boolean isViewFromObject(View arg0, Object arg1) {
+                return arg0 == arg1;
+            }
+
+            @Override
+            public void destroyItem(View container, int position, Object object) {
+                ((ViewPager) container).removeView(mImageViews1.get(position % mImageViews1.size()));
+
+            }
+
+            /**
+             * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
+             */
+            @Override
+            public Object instantiateItem(View container, int position) {
+                current1=position;
+                mImageViews1.get(position % mImageViews1.size()).setBackgroundResource(imgIdArray1[position % mImageViews1.size()]);
+                ((ViewPager) container).addView(mImageViews1.get(position % mImageViews1.size()), 0);
+                return mImageViews1.get(position % mImageViews1.size());
+            }
+
+        };
+    }
+
+    public Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case 0:
+                    record = true;
+                    //设置ViewPager的默认项, 设置为长度的100倍，这样子开始就能往左滑动
+
+
+                    //viewPager.setCurrentItem((mImageViews.size()) * 100);
+
+                    //viewPager.setOnPageChangeListener(MainActivity.this);
+                    String Url[]=new String[]{"http://bmob-cdn-7049.b0.upaiyun.com/2016/10/24/0c7a7005405a1d87803cf6a44eaf54aa.png","http://bmob-cdn-7049.b0.upaiyun.com/2016/10/24/2951776740a4af9e80883db571bcb301.png","http://bmob-cdn-7049.b0.upaiyun.com/2016/10/24/d4caeabf40e76e9b80597c48fded760a.png","http://bmob-cdn-7049.b0.upaiyun.com/2016/10/24/9701488f40e44533807b2508b749e980.png"};
+
+                    for(int i=0;i<4;i++) {
+                        AsynImageLoader asynImageLoader = new AsynImageLoader();
+                        asynImageLoader.showImageAsyn((ImageView) mImageViews.get(i),Url[i],0x7f020163);
+                    }
+                    viewPager.setAdapter(pageradapter);
+                    viewPager1.setAdapter(pageradapter1);
+                    break;
+                case 1:
+                    listView = (ListView) findViewById(R.id.listview);
+
+                    list_Adapter myListAdapter = new list_Adapter(MainActivity.this, informations);
+                    listView.setOnItemClickListener(MainActivity.this);
+                    listView.setAdapter(myListAdapter);
+                    break;
+                case 2:
+                    //viewPager1.setCurrentItem((mImageViews1.size()) * 100);
+
+                    //viewPager1.setOnPageChangeListener(MainActivity.this);
+
+                    break;
+                case 3:
+
+                    viewPager.setCurrentItem(current);
+                    viewPager1.setCurrentItem(current1);
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            //actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setLogo(R.mipmap.ic_launcher);
+            actionBar.setDisplayUseLogoEnabled(true);
+
+        }
+    }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         //viewPager.setAnimation();
+        judge=true;
+        if(judge!=false){
+            scheduledExecutorService.shutdown();
+        }
 
     }
 
@@ -427,7 +465,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         //每隔2秒钟切换一张图片
-        scheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 8, 4, TimeUnit.SECONDS);
+
+        scheduledExecutorService.scheduleWithFixedDelay(new ViewPagerTask(), 3, 4, TimeUnit.SECONDS);
+
+
     }
 
     private class ViewPagerTask implements Runnable {

@@ -42,7 +42,6 @@ dependencies {
     compile files('libs/baidumapapi_map_v4_0_0.jar')
     compile files('libs/baidumapapi_radar_v4_0_0.jar')
     compile files('libs/baidumapapi_search_v4_0_0.jar')
-
 }
 
 

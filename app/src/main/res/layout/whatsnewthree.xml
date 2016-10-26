@@ -6,7 +6,7 @@
         android:id="@+id/newthree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/new_three"
+        android:src="@drawable/newthree"
         android:scaleType="fitXY"
         />
 </LinearLayout>

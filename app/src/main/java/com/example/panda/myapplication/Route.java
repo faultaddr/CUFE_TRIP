@@ -17,6 +17,7 @@ import com.umeng.message.PushAgent;
 import java.util.ArrayList;
 
 
+import butterknife.ButterKnife;
 
 import static anetwork.channel.http.NetworkSdkSetting.context;
 
