@@ -25,27 +25,15 @@
     <!-- BmobSDK所需的权限 -->
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.GET_TASKS" />
-
-
-
-
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-
-
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- 富媒体需要声明的权限 -->
-    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
 
@@ -55,26 +43,22 @@
         android:icon="@mipmap/ic_launcher"
         android:label="CUFE_TRIP"
         android:supportsRtl="true"
-        tools:replace="android:label"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="ATpiRlIlMRdL6NIlEhce1bod4tXWxqip" />
-
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5802606b67e58e4122002464">
-        </meta-data>
+            android:value="5802606b67e58e4122002464" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="c98024a819f30b945da6d678ca0354e6">
-        </meta-data>
+            android:value="c98024a819f30b945da6d678ca0354e6" />
 
         <activity
             android:name=".initiateActivity"
             android:label="CUFE_TRIP"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -99,9 +83,7 @@
         <activity
             android:name=".MainActivity"
             android:label="CUFE_TRIP"
-            android:logo="@mipmap/ic_launcher"
-             />
-
+            android:logo="@mipmap/ic_launcher" />
         <activity
             android:name=".enroll"
             android:label="报名" />
@@ -109,58 +91,50 @@
             android:name=".Line"
             android:label="路线" />
         <activity android:name=".start" />
-
-
-
-        <activity android:name=".Route">
-
-    </activity>
-        <activity android:name=".Progress"></activity>
+        <activity android:name=".Route" />
+        <activity android:name=".Progress" />
         <activity
             android:name=".search.RoutePlanDemo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_route"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".search.GeoCoderDemo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_geocode"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".search.BusLineSearchDemo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_bus"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".search.DistrictSearchDemo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_districsearch"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".search.PoiSearchDemo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_poi"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".search.ShareDemo"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_share"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".search.ShareDemoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/demo_name_share"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".database"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".TempActivity"></activity>
     </application>
 
 </manifest>

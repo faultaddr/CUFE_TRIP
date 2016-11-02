@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -92,6 +94,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        DatabaseHelper database = new DatabaseHelper(LoginActivity.this);//这段代码放到Activity类中才用this
+        SQLiteDatabase db1 = null;
+        db1 = database.getReadableDatabase();
         try {
             //创建SharedPreferences对象
             SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
@@ -99,6 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //获得保存在SharedPredPreferences中的用户名和密码
             String user_name = sp.getString("username", "");
             String pass_word = sp.getString("password", "");
+
             if (user_name.length()>0){
                 mEmailView.setText(user_name);
                 mPasswordView.setText(pass_word);
@@ -464,6 +470,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //提交用户名和密码
                 ed.apply();
+                DatabaseHelper database = new DatabaseHelper(LoginActivity.this);//这段代码放到Activity类中才用this
+                SQLiteDatabase db = null;
+                db = database.getReadableDatabase();
+                ContentValues cv = new ContentValues();//实例化一个ContentValues用来装载待插入的数据cv.put("username","Jack Johnson");//添加用户名
+                cv.put("username",mEmail);
+                cv.put("password",mPassword); //添加密码
+                db.insert("user",null,cv);//执行插入操作
             }
 
 

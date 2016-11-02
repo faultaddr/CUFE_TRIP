@@ -394,7 +394,6 @@
     <string name="demo_desc_indoorsearch">介绍在室内图中进行室内POI检索</string>
 
 
-
     <string name="demo_desc_opengl">介绍如何使用OpenGL绘制在地图中进行绘制</string>
     <string name="key_error">"请在  DemoApplication.java文件输入正确的授权Key！\r\n申请地址：http://dev.baidu.com/wiki/static/imap/key/"</string>
     <string name="navi_tip">百度地图SDK支持通过相关的接口，调启百度地图客户端（v5.0以上）导航和Web端百度地图导航。</string>

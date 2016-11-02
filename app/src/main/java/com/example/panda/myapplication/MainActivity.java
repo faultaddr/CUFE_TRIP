@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.panda.myapplication.search.BusLineSearchDemo;
@@ -73,6 +75,17 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private boolean judge=false;
     private int current=0;
     private int current1=0;
+    private Integer[]   mImageIds   =
+            {
+                    R.drawable.newone_small,
+                    R.drawable.newtwo_small,
+                    R.drawable.newthree_small,
+                    R.drawable.newfour_small
+
+            };
+    private String mtext[]={
+            "路线一","路线二","路线三","路线四"
+    };
 /*
 TODO:做图片的异步加载，从Bmob中获取图片地址，然后按加载网络图片的方法去加载图片。
  */
@@ -192,6 +205,56 @@ TODO:做图片的异步加载，从Bmob中获取图片地址，然后按加载�
             }
         });
         //设置点击导航栏路线显示的内容。
+
+/*
+fragment 碎片显示
+路线介绍
+ */
+        RelativeLayout r1=(RelativeLayout)findViewById(R.id.Relative1);
+        RelativeLayout r2=(RelativeLayout)findViewById(R.id.Relative2);
+        RelativeLayout r3=(RelativeLayout)findViewById(R.id.Relative3);
+        RelativeLayout r4=(RelativeLayout)findViewById(R.id.Relative4);
+
+        r1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent=new Intent();
+                intent.putExtra("num","1");
+                intent.setClass(MainActivity.this,TempActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        r2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.putExtra("num","2");
+                intent.setClass(MainActivity.this,TempActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        r3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.putExtra("num","3");
+                intent.setClass(MainActivity.this,TempActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        r4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.putExtra("num","4");
+                intent.setClass(MainActivity.this,TempActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         LayoutInflater inflater=null;
         inflater = getLayoutInflater();

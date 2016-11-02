@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:background="#fffff9"
     >
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -180,6 +179,116 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="clip_horizontal"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/Relative1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <ImageView
+                        android:id="@+id/image_item1"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/newone_small"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/text_item1"
+                        android:layout_below="@+id/image_item1"
+                        android:layout_height="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="线路一"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/Relative2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/Relative1"
+                    android:clickable="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/image_item2"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/newtwo_small"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/text_item2"
+                        android:layout_below="@+id/image_item2"
+                        android:layout_height="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="线路二"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/Relative3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/Relative1"
+                    android:clickable="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/image_item3"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/newthree_small"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/text_item3"
+                        android:layout_below="@+id/image_item3"
+                        android:layout_height="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="线路三"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/Relative4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/Relative3"
+                    android:layout_toRightOf="@id/Relative2"
+                    android:clickable="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/image_item4"
+                        android:layout_width="200dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/newfour_small"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/text_item4"
+                        android:layout_below="@+id/image_item4"
+                        android:layout_height="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="线路四"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/line1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -309,4 +418,5 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>
