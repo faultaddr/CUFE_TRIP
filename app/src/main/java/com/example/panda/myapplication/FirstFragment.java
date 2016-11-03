@@ -14,3 +14,5 @@ public class FirstFragment extends Fragment {
 		return inflater.inflate(R.layout.view1, container, false);
 	}
 }
+
+

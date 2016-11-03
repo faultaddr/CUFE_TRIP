@@ -47,7 +47,7 @@ public class PicUtil {
         BitmapDrawable icon = null;
         try {
             HttpURLConnection hp = (HttpURLConnection) imageUri
-                    .openConnection();
+                    .openConnection();//打开连接
             icon = new BitmapDrawable(hp.getInputStream());// 将输入流转换成bitmap
             hp.disconnect();// 关闭连接
         } catch (Exception e) {
@@ -116,10 +116,11 @@ public class PicUtil {
             URL myFileUrl = new URL(imageUri);
             HttpURLConnection conn = (HttpURLConnection) myFileUrl
                     .openConnection();
-            conn.setDoInput(true);
+            conn.setDoInput(true);//是否开启输入输出
             conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
+            InputStream is = conn.getInputStream();//获取网络输入流
+            bitmap = BitmapFactory.decodeStream(is);//解码成Bitmap格式。
+
             is.close();
 
             Log.i(TAG, "image download finished." + imageUri);
