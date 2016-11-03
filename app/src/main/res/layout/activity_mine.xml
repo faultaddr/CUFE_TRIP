@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+         >
+
+        <com.example.panda.myapplication.RoundImageView
+            android:id="@+id/img_user_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/touxiang" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rectangle" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/boder"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/my_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户邮箱"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+
+            />
+        <TextView
+            android:id="@+id/my_email_name"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="779087031@qq.com"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+
+            />
+    </LinearLayout>
+</LinearLayout>

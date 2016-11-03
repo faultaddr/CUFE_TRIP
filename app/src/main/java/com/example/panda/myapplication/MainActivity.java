@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private LinearLayout Imageview;
     private LinearLayout Imageview_setting;
     private LinearLayout Imageview_enroll;
+    private LinearLayout Imageview_mine;
     private ImageView weather;
     private ImageView calender;
     private ImageView require;
@@ -292,6 +293,16 @@ fragment 碎片显示
                 startActivity(intent);
             }
         });
+        Imageview_mine=(LinearLayout)findViewById(R.id.mine);
+        Imageview_mine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent();
+                intent.setClass(MainActivity.this,Mine.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void InitView() {

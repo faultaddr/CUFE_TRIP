@@ -134,7 +134,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TempActivity"></activity>
+        <activity android:name=".TempActivity" />
+        <activity android:name=".Mine"></activity>
     </application>
 
 </manifest>

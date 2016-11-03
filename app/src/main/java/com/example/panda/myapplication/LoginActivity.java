@@ -365,10 +365,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-
+        private String s;
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+
         }
 
 
@@ -458,7 +459,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
         public void record(){
-
+            s=mEmail;
                 SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
 
                 //获得sp的编辑器
@@ -492,7 +493,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent();
 
                 intent.setClass(LoginActivity.this,Progress.class);
-
+                intent.setAction("com.example.panda");
+                intent.putExtra("name", s);
+                LoginActivity.this.sendBroadcast(intent);
+                Toast.makeText(getApplicationContext(), "发送广播成功", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
 
                 finish();
