@@ -47,29 +47,20 @@
         tools:replace="android:label">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ATpiRlIlMRdL6NIlEhce1bod4tXWxqip" />
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5802606b67e58e4122002464" />
-        <meta-data
-            android:name="UMENG_MESSAGE_SECRET"
-            android:value="c98024a819f30b945da6d678ca0354e6" />
+            android:value="t9nZXw3W2FOLG0DH3LjWv66uLzZWCbVj" />
+
 
         <activity
-            android:name=".initiateActivity"
+            android:name=".Ui.Activity.initiateActivity"
             android:label="CUFE_TRIP"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Ui.Activity.SettingsActivity"
             android:label="设置" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Ui.Activity.LoginActivity"
             android:label="登录"
             android:screenOrientation="portrait" />
         <!--
@@ -81,18 +72,25 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Ui.Activity.MainActivity"
             android:label="CUFE_TRIP"
-            android:logo="@mipmap/ic_launcher" />
+            android:logo="@mipmap/ic_launcher"
+            >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>>
         <activity
-            android:name=".enroll"
+            android:name=".Ui.Activity.EnrollActivity"
             android:label="报名" />
         <activity
-            android:name=".Line"
+            android:name=".Ui.Activity.LineActivitySimple"
             android:label="路线" />
-        <activity android:name=".start" />
-        <activity android:name=".Route" />
-        <activity android:name=".Progress" />
+        <activity android:name=".Ui.Activity.start" />
+        <activity android:name=".Ui.Activity.RouteActivity" />
+        <activity android:name=".Ui.Activity.ProgressActivity" />
         <activity
             android:name=".search.RoutePlanDemo"
             android:configChanges="orientation|keyboardHidden"
@@ -130,12 +128,18 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".database"
+            android:name=".Data.database"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TempActivity" />
-        <activity android:name=".Mine"></activity>
+        <activity android:name=".Ui.Activity.TempActivity" />
+        <activity android:name=".Ui.Activity.MineActivity" />
+        <activity
+            android:name=".Ui.Activity.LineActivity"
+            android:label="@string/title_activity_line"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

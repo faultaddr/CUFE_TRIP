@@ -3,17 +3,17 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.example.panda.myapplication.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.example.panda.myapplication.Ui.Activity.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="常用设置" />
 
     <header
-        android:fragment="com.example.panda.myapplication.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.example.panda.myapplication.Ui.Activity.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="通知" />
 
     <header
-        android:fragment="com.example.panda.myapplication.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.example.panda.myapplication.Ui.Activity.SettingsActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="数据与同步" />
 

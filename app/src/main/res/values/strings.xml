@@ -437,5 +437,6 @@
     <string name="title_activity_texture_map_view_demo">TextureMapViewDemo</string>
     <string name="title_activity_poi_near_by_search_demo">PoiNearBySearchDemo</string>
     <string name="instruction">当设计的UI与地图部分重叠时，设置地图的padding值,以防止UI遮挡</string>
+    <string name="title_activity_line">LineActivity</string>
 
 </resources>

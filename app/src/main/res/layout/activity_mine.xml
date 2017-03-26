@@ -8,7 +8,7 @@
 
          >
 
-        <com.example.panda.myapplication.RoundImageView
+        <com.example.panda.myapplication.Model.RoundImageView
             android:id="@+id/img_user_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"

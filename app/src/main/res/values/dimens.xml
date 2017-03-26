@@ -22,5 +22,6 @@
     <dimen name="margin_right">15dp</dimen>
     <dimen name="offset_title">5dp</dimen>
     <dimen name="width_title_leftImg">30dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>
