@@ -43,9 +43,9 @@ public class list_Adapter extends BaseAdapter{
         ViewHolder holder;
         if(convertView==null){
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.list_item, null);
-            holder.imageSight=(ImageView)convertView.findViewById(R.id.list_image);
-            holder.textSight = (TextView) convertView.findViewById(R.id.list_text);
+            convertView = inflater.inflate(R.layout.list_item_lineactivity, null);
+            holder.imageSight=(ImageView)convertView.findViewById(R.id.list_image1);
+            holder.textSight = (TextView) convertView.findViewById(R.id.list_text1);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

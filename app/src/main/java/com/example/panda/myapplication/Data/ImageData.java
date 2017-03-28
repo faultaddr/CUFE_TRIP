@@ -2,6 +2,8 @@ package com.example.panda.myapplication.Data;
 
 import android.content.Context;
 
+import com.baidu.platform.comapi.map.A;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +18,10 @@ import java.util.List;
 public class ImageData {
     public static ArrayList<String> imageData=new ArrayList<>();
     public static ArrayList<String>imageUrl=new ArrayList<>();
+    public static ArrayList<String>dataUrl=new ArrayList<>();
     public static boolean TAG_URl=false;
     public static boolean TAG_Data=false;
+    public static boolean TAG_DATA_URL=false;
     public static  ArrayList<String> getImageUrl(final Context context)  {
         if(imageUrl.size()>100){
             return imageUrl;
@@ -64,6 +68,31 @@ public class ImageData {
         }
         return imageData;
     }
+    public static ArrayList<String>getDataUrl(final Context context){
+        if(dataUrl.size()>100){
+            return dataUrl;
+        }
+        new Thread() {
+            public void run() {
+                try{
+                    readFileByLines(context.getClass().getClassLoader().getResourceAsStream("assets/" + "content.txt"),dataUrl);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                TAG_DATA_URL=true;
+            }
+        }.start();
+        while(TAG_DATA_URL==false) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        TAG_DATA_URL=false;
+        return dataUrl;
+    }
+
     public static synchronized void readFileByLines(InputStream fileName, ArrayList<String>imageInfo) {
         //File file = new File(fileName);
         BufferedReader reader = null;

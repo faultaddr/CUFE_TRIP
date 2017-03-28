@@ -1,5 +1,6 @@
 package com.example.panda.myapplication.Ui.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,6 @@ public class LineActivity extends AppCompatActivity implements AbsListView.OnScr
     private ArrayList<List_info> arrayList = new ArrayList<>();
     public Bitmap[] bmp = new Bitmap[5];
     String[] text = new String[100];
-    static ArrayList<String> imageUrl = new ArrayList<>();
 
     @Override
 
@@ -41,7 +41,7 @@ public class LineActivity extends AppCompatActivity implements AbsListView.OnScr
         //setSupportActionBar(toolbar);
         listView = (MyListView) findViewById(R.id.friend_circle);
 
-        Log.i(">>imageUrl", ImageData.imageUrl.size() + "");
+        //Log.i(">>imageUrl", ImageData.imageUrl.size() + "");
         LoadingView mLoadingView = (LoadingView) findViewById(R.id.loading);
         LayoutInflater layoutInflater = LayoutInflater.from(this);
 
@@ -50,8 +50,8 @@ public class LineActivity extends AppCompatActivity implements AbsListView.OnScr
 
         listView.setEmptyView(mLoadingView);
         listView.setAdapter(new list_Adapter(this,
-                ImageData.getImageUrl(getApplicationContext()).subList(tempRecord, tempRecord + 14),
-                ImageData.getImageData(getApplicationContext()).subList(tempRecord,tempRecord + 14)));
+                ImageData.imageUrl.subList(tempRecord, tempRecord + 14),
+                ImageData.imageData.subList(tempRecord,tempRecord + 14)));
         listView.getEmptyView().setVisibility(View.INVISIBLE);
         footerView.findViewById(R.id.footer_layout).setVisibility(View.VISIBLE);//设置底部布局不可见
 
@@ -76,7 +76,11 @@ public class LineActivity extends AppCompatActivity implements AbsListView.OnScr
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent=new Intent();
+                //Log.i(">>position",position+"");
+                intent.putExtra("contentPosition",position);
+                intent.setClass(LineActivity.this,TempActivity.class);
+                startActivity(intent);
             }
         });
 

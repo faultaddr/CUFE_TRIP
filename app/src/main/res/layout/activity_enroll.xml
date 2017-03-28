@@ -7,29 +7,36 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_centerHorizontal="true"
+
     tools:context="com.example.panda.myapplication.Ui.Activity.EnrollActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
 
-        android:orientation="vertical">
+        android:background="@drawable/background_drawable"
+
+        >
 
         <TextView
             android:id="@+id/enroll_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="报名表"
+
             android:textSize="30sp"
             android:textStyle="bold"
             android:gravity="center"
             />
 
         <EditText
-
+            android:layout_centerHorizontal="true"
             android:id="@+id/name"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="45dp"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/enroll_text"
@@ -40,16 +47,18 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
+            android:layout_centerHorizontal="true"
             android:hint="学号" />
 
         <RelativeLayout
             android:id="@+id/enroll_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
             android:layout_below="@+id/student_id"
-
-            android:layout_marginTop="20dp"
-            >
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
             <TextView
                 android:layout_marginTop="20dp"
                 android:id="@+id/sex_select"
@@ -57,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="性别"
                 android:gravity="center"
+                android:layout_centerHorizontal="true"
                 android:textSize="20sp"
                 />
 
@@ -66,6 +76,7 @@
                 android:layout_toRightOf="@id/sex_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:spinnerMode="dropdown"></Spinner>
         </RelativeLayout>
         <RelativeLayout
@@ -82,6 +93,7 @@
                 android:gravity="center"
                 android:text="路线选择"
                 android:textSize="20sp"
+                android:layout_centerHorizontal="true"
 
                 />
             <Spinner
@@ -90,6 +102,7 @@
                 android:layout_toRightOf="@id/line_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:spinnerMode="dropdown"></Spinner>
         </RelativeLayout>
         <EditText
@@ -100,6 +113,7 @@
             android:layout_below="@+id/enroll_line"
             android:hint="身份证号（用于购买保险）"
             android:textColorHint="#0000ff"
+            android:layout_centerHorizontal="true"
             />
         <Button
             android:id="@+id/enroll_button"

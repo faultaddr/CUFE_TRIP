@@ -3,7 +3,9 @@ package com.example.panda.myapplication.Ui.Activity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.panda.myapplication.Ui.Fragment.ContentFragment;
 import com.example.panda.myapplication.Ui.Fragment.FirstFragment;
 import com.example.panda.myapplication.Ui.Fragment.FourFragment;
 import com.example.panda.myapplication.R;
@@ -31,39 +33,50 @@ public class TempActivity extends AppCompatActivity {
         list.add(secondFragment);
         list.add(thirdFragment);
         list.add(fourFragment);
+        if (getIntent().hasExtra("num")) {
+            if (getIntent().getStringExtra("num").equals("1")) {
+                count = 1;
+                transaction.replace(R.id.main_container, firstFragment);
+                //transaction.addToBackStack(null);
+                transaction.commit();
+                transaction.show(firstFragment);
+            }
+            if (getIntent().getStringExtra("num").equals("2")) {
+                count = 2;
 
-        if (getIntent().getStringExtra("num").equals("1")) {
-            count = 1;
-            transaction.replace(R.id.main_container, firstFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-            transaction.show(firstFragment);
+                transaction.replace(R.id.main_container, secondFragment);
+                //transaction.addToBackStack(null);
+                transaction.commit();
+                transaction.show(secondFragment);
+            }
+            if (getIntent().getStringExtra("num").equals("3")) {
+                count = 3;
+                transaction.replace(R.id.main_container, thirdFragment);
+                //transaction.addToBackStack(null);
+                transaction.commit();
+                transaction.show(thirdFragment);
+            }
+            if (getIntent().getStringExtra("num").equals("4")) {
+                count = 4;
+                transaction.replace(R.id.main_container, fourFragment);
+                //transaction.addToBackStack(null);
+                transaction.commit();
+                transaction.show(fourFragment);
+            }
         }
-        if (getIntent().getStringExtra("num").equals("2")) {
-            count = 2;
-
-            transaction.replace(R.id.main_container, secondFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-            transaction.show(secondFragment);
-        }
-        if (getIntent().getStringExtra("num").equals("3")) {
-            count = 3;
-            transaction.replace(R.id.main_container, thirdFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-            transaction.show(thirdFragment);
-        }
-        if (getIntent().getStringExtra("num").equals("4")) {
-            count = 4;
-            transaction.replace(R.id.main_container, fourFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-            transaction.show(fourFragment);
+        if (getIntent().hasExtra("contentPosition")) {
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
+            int s=getIntent().getExtras().getInt("contentPosition");
+            Log.i(">>I",""+s);
+            bundle.putString("position", s+"");
+            ContentFragment contentFragment = ContentFragment.newInstance(bundle);
+            fragmentTransaction.replace(R.id.main_container, contentFragment);
+            fragmentTransaction.commit();
+            fragmentTransaction.disallowAddToBackStack();
+            fragmentTransaction.show(contentFragment);
         }
     }
-
-
 
 
 }

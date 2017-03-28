@@ -56,16 +56,18 @@
                 android:layout_height="match_parent"
                 android:fillViewport="true"
                 android:fitsSystemWindows="true"
+
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 >
 
-                <TextView
+                <WebView
                     android:id="@+id/textview_route"
                     android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/point1"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:nestedScrollingEnabled="true"
+                    />
 
             </android.support.v4.widget.NestedScrollView>
 
