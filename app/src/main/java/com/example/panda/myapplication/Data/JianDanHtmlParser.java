@@ -110,7 +110,7 @@ public class JianDanHtmlParser {
 			count++;
 			if(count==2){
 			s=matcher.group(2);
-			//Log.i(">>>>sss",s);
+			Log.i(">>>>sss",s);
 				break;
 			}
 			//String newStr = null;

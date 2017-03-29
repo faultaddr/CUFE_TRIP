@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.panda.myapplication.Constants;
 import com.example.panda.myapplication.Data.DatabaseHelper;
 import com.example.panda.myapplication.R;
 import com.example.panda.myapplication.Data.User;
@@ -91,22 +92,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         DatabaseHelper database = new DatabaseHelper(LoginActivity.this);//这段代码放到Activity类中才用this
         SQLiteDatabase db1 = null;
         db1 = database.getReadableDatabase();
-        try {
-            //创建SharedPreferences对象
-            SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
+        if(getIntent().getAction()=="ExitRelogin") {
+            ;
+        }else{
 
-            //获得保存在SharedPredPreferences中的用户名和密码
-            String user_name = sp.getString("username", "");
-            String pass_word = sp.getString("password", "");
+            try {
+                //创建SharedPreferences对象
+                SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
 
-            if (user_name.length()>0){
-                mEmailView.setText(user_name);
-                mPasswordView.setText(pass_word);
+                //获得保存在SharedPredPreferences中的用户名和密码
+                String user_name = sp.getString("username", "");
+                String pass_word = sp.getString("password", "");
+
+                if (user_name.length() > 0) {
+                    mEmailView.setText(user_name);
+                    Constants.userName = user_name;
+                    mPasswordView.setText(pass_word);
+                }
+                //在用户名和密码的输入框中显示用户名和密码
+
+            } catch (Exception excepton) {
+
             }
-            //在用户名和密码的输入框中显示用户名和密码
-
-        }catch(Exception excepton){
-
         }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

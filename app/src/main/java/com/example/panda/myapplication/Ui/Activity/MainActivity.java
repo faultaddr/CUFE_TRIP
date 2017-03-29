@@ -304,11 +304,18 @@ fragment 碎片显示
                 Intent intent =new Intent();
                 intent.setClass(MainActivity.this,MineActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
     }
-
+    @Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //从mineActivity 传过来要结束这个activity
+    if(requestCode==101){
+        finish();
+    }
+}
     private void InitView() {
 /*
         imgIdArray = new int[]{R.drawable.newone, R.drawable.newtwo, R.drawable.newthree, R.drawable.newfour};

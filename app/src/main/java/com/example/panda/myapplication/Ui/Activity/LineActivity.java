@@ -78,7 +78,7 @@ public class LineActivity extends AppCompatActivity implements AbsListView.OnScr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent();
                 //Log.i(">>position",position+"");
-                intent.putExtra("contentPosition",position);
+                intent.putExtra("contentPosition",tempRecord+position);
                 intent.setClass(LineActivity.this,TempActivity.class);
                 startActivity(intent);
             }

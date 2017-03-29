@@ -178,24 +178,35 @@
                     android:clickable="true"></ListView>
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="clip_horizontal"
                 android:orientation="horizontal"
                 android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="fill_vertical"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
                 <RelativeLayout
                     android:id="@+id/Relative1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:background="@drawable/background_drawable"
+                    android:padding="4dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true">
 
                     <ImageView
                         android:id="@+id/image_item1"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/newone_small"
@@ -215,12 +226,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Relative1"
+                    android:layout_marginTop="8dp"
                     android:clickable="true"
+                    android:background="@drawable/background_drawable"
+                    android:padding="4dp"
                     >
 
                     <ImageView
                         android:id="@+id/image_item2"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/newtwo_small"
@@ -235,17 +249,28 @@
                         android:text="线路二"
                         />
                 </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="clip_vertical"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    >
                 <RelativeLayout
                     android:id="@+id/Relative3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/Relative1"
+                    android:background="@drawable/background_drawable"
                     android:clickable="true"
+                    android:padding="4dp"
                     >
 
                     <ImageView
                         android:id="@+id/image_item3"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/newthree_small"
@@ -266,12 +291,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Relative3"
                     android:layout_toRightOf="@id/Relative2"
+                    android:layout_marginTop="8dp"
                     android:clickable="true"
+                    android:background="@drawable/background_drawable"
+                    android:padding="4dp"
                     >
 
                     <ImageView
                         android:id="@+id/image_item4"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="60dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/newfour_small"
@@ -286,8 +314,8 @@
                         android:text="线路四"
                         />
                 </RelativeLayout>
-
-            </RelativeLayout>
+</LinearLayout>>
+            </LinearLayout>
             <RelativeLayout
                 android:id="@+id/line1"
                 android:layout_width="fill_parent"
